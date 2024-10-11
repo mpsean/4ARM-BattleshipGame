@@ -187,7 +187,7 @@ body {
 
 .submarine-container,
 .cruiser-container {
-  --width: 3;
+  --width: 4;
 }
 
 .submarine-container-vertical,
