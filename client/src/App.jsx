@@ -1,4 +1,8 @@
+import React, { useEffect } from 'react';
+import { socket } from './socket';
+
 const App = () => {
+
   return (
       <main class="relative bg-front bg-cover h-screen w-screen bg-no-repeat bg-center bg-cover">
           <div class="flex py-16 px-4 mx-auto max-w-screen-xl xl:py-8 lg:px-20 gap-4 items-center flex-col lg:flex-row">
