@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isHorizontal = true
   let isGameOver = false
   let currentPlayer = 'user'
-  const width = 10
+  const width = 8
   let playerNum = 0
   let ready = false
   let enemyReady = false
@@ -29,22 +29,22 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'destroyer',
       directions: [
-        [0, 1],
-        [0, width]
+        [0, 1, 2, 3],
+        [0, width, width*2, width*3]
       ]
     },
     {
       name: 'submarine',
       directions: [
-        [0, 1, 2],
-        [0, width, width*2]
+        [0, 1, 2, 3],
+        [0, width, width*2, width*3]
       ]
     },
     {
       name: 'cruiser',
       directions: [
-        [0, 1, 2],
-        [0, width, width*2]
+        [0, 1, 2, 3],
+        [0, width, width*2, width*3]
       ]
     },
     {
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       name: 'carrier',
       directions: [
-        [0, 1, 2, 3, 4],
-        [0, width, width*2, width*3, width*4]
+        [0, 1, 2, 3],
+        [0, width, width*2, width*3]
       ]
     },
   ]
@@ -202,31 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
     else generate(ship)
   }
   
-
-  //Rotate the ships
-  function rotate() {
-    if (isHorizontal) {
-      destroyer.classList.toggle('destroyer-container-vertical')
-      submarine.classList.toggle('submarine-container-vertical')
-      cruiser.classList.toggle('cruiser-container-vertical')
-      battleship.classList.toggle('battleship-container-vertical')
-      carrier.classList.toggle('carrier-container-vertical')
-      isHorizontal = false
-      // console.log(isHorizontal)
-      return
-    }
-    if (!isHorizontal) {
-      destroyer.classList.toggle('destroyer-container-vertical')
-      submarine.classList.toggle('submarine-container-vertical')
-      cruiser.classList.toggle('cruiser-container-vertical')
-      battleship.classList.toggle('battleship-container-vertical')
-      carrier.classList.toggle('carrier-container-vertical')
-      isHorizontal = true
-      // console.log(isHorizontal)
-      return
-    }
-  }
-  rotateButton.addEventListener('click', rotate)
 
   //move around user ship
   ships.forEach(ship => ship.addEventListener('dragstart', dragStart))
@@ -401,7 +376,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkForWins() {
     let enemy = 'computer'
     if(gameMode === 'multiPlayer') enemy = 'enemy'
-    if (destroyerCount === 2) {
+    if (destroyerCount === 3) {
       infoDisplay.innerHTML = `You sunk the ${enemy}'s destroyer`
       destroyerCount = 10
     }
@@ -413,15 +388,15 @@ document.addEventListener('DOMContentLoaded', () => {
       infoDisplay.innerHTML = `You sunk the ${enemy}'s cruiser`
       cruiserCount = 10
     }
-    if (battleshipCount === 4) {
+    if (battleshipCount === 3) {
       infoDisplay.innerHTML = `You sunk the ${enemy}'s battleship`
       battleshipCount = 10
     }
-    if (carrierCount === 5) {
+    if (carrierCount === 3) {
       infoDisplay.innerHTML = `You sunk the ${enemy}'s carrier`
       carrierCount = 10
     }
-    if (cpuDestroyerCount === 2) {
+    if (cpuDestroyerCount === 3) {
       infoDisplay.innerHTML = `${enemy} sunk your destroyer`
       cpuDestroyerCount = 10
     }
@@ -442,11 +417,11 @@ document.addEventListener('DOMContentLoaded', () => {
       cpuCarrierCount = 10
     }
 
-    if ((destroyerCount + submarineCount + cruiserCount + battleshipCount + carrierCount) === 50) {
+    if ((destroyerCount + submarineCount + cruiserCount + battleshipCount + carrierCount) >= 20) {
       infoDisplay.innerHTML = "YOU WIN"
       gameOver()
     }
-    if ((cpuDestroyerCount + cpuSubmarineCount + cpuCruiserCount + cpuBattleshipCount + cpuCarrierCount) === 50) {
+    if ((cpuDestroyerCount + cpuSubmarineCount + cpuCruiserCount + cpuBattleshipCount + cpuCarrierCount) >= 20) {
       infoDisplay.innerHTML = `${enemy.toUpperCase()} WINS`
       gameOver()
     }
