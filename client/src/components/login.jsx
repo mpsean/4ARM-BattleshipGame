@@ -12,7 +12,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 
   const handleSubmit  = (e) => {
       e.preventDefault();
-      axios.post("http://localhost:3001/user/login", { nickname, password })
+      axios.post(`http://localhost:3001/user/login`, { nickname, password })
           .then(result => {
               if (result.data.message === "Login successful") {
                 console.log("Login successful")

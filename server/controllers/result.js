@@ -6,10 +6,10 @@ const router = express.Router();
 
 export const updateScore = async (req, res) => {
     try {
-        const { playerId } = req.params; 
+        const { nickname } = req.params; 
 
         const updatedPlayer = await UserModel.findOneAndUpdate(
-            playerId,             
+            { nickname : nickname },             
             { $inc: { score: 1 } }, 
             { new: true }          
         );
@@ -26,11 +26,11 @@ export const updateScore = async (req, res) => {
 };
 
 export const resetScore = async (req, res) => {
+    
     try {
-        const { playerId } = req.params; 
-
+        const { nickname } = req.params; 
         const updatedPlayer = await UserModel.findOneAndUpdate(
-            playerId,             
+            { nickname : nickname } ,             
             { $set: { score: 0 } }, 
             { new: true }          
         );
@@ -45,3 +45,5 @@ export const resetScore = async (req, res) => {
         res.status(500).json({ message: 'Failed to reset player score', error });
     }
 }
+
+export default router;
