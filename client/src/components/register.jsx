@@ -19,7 +19,7 @@ const register = () => {
     axios.post("http://localhost:3001/user/register", { nickname, password })
         .then(result => {
             if (result.status === 201) {
-                navigate("/user/login");
+                navigate("/login");
             }
         })
         .catch(err => {
