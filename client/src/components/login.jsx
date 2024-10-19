@@ -18,9 +18,14 @@ function login({ setIsLoggedIn, isLoggedIn }) {
                 console.log("Login successful")
 
                 const userData = result.data.user; // Adjust based on your actual response structure
+                console.log(userData);
+                const userID = result.data.user.nickname;
+                console.log(userID);
+
+                sessionStorage.setItem("userId", userID);
                 
                 // Navigate to the home page with user data
-                navigate("/home", { state: { user: userData } });
+                navigate("/game", { state: { user: userData } });
               } 
               if (result.data.message === "Invalid credentials") {
                 console.log("Invalid credentials")
@@ -62,7 +67,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
         <button type="submit">Join Game</button>
       </form>
       
-      <p>Don't have an account? <Link to="/user/register">SignUp</Link></p>      
+      <p>Don't have an account? <Link to="/register">SignUp</Link></p>      
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}

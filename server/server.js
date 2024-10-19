@@ -15,8 +15,10 @@ app.use(cors({
 }));
 
 import userRoutes from './routes/user.js';
+import resultRoutes from './routes/result.js';
 
 app.use('/user', userRoutes);
+app.use('/result', resultRoutes);
 
 mongoose.connect(process.env.MONGO_URL)
     .then(() => console.log('Connected to MongoDB'))
