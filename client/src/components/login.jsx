@@ -12,7 +12,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 
   const handleSubmit  = (e) => {
       e.preventDefault();
-      axios.post("http://localhost:3001/login", { nickname, password })
+      axios.post("http://localhost:3001/user/login", { nickname, password })
           .then(result => {
               if (result.data.message === "Login successful") {
                 console.log("Login successful")
@@ -62,7 +62,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
         <button type="submit">Join Game</button>
       </form>
       
-      <p>Don't have an account? <Link to="/register">SignUp</Link></p>      
+      <p>Don't have an account? <Link to="/user/register">SignUp</Link></p>      
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}
