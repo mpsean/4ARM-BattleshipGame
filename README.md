@@ -10,3 +10,7 @@ How to use :
 <p> node server.js </p>
 
 <p>4.play on http://localhost:3000/</p>
+<br>
+Library
+<p>Server : npm i mongoose axios express cors bcrypt dotenv nodemon express-session connect-mongo </p>
+<p>Client : npm i tailwindcss vite react-router-dom axios </p>
