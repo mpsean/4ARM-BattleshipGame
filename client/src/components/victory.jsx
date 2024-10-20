@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { disconnectSocket } from '../socket';
 
 
 const Victory = () => {
@@ -12,15 +13,17 @@ const Victory = () => {
 
 
   // Function to handle incrementing the count
-  const handleIncrement = () => {
+  const handleRematch = () => {
     Navigate("/game")
   };
 
   // Function to handle decrementing the count
-  const handleDecrement = () => {
+  const handleDisconnect = () => {
     axios.put(`http://localhost:3001/result/${userId}/resetScore`)
         .then(result => {
             console.log(result);
+            disconnectSocket();
+            sessionStorage.removeItem("userId");
             Navigate("/login")
         })
         .catch(err => setError(console.log(err)));
@@ -31,12 +34,12 @@ const Victory = () => {
       <h2>Counter: {count}</h2>
       
       {/* Button to increment the count */}
-      <button onClick={handleIncrement} style={buttonStyle}>
+      <button onClick={handleRematch} style={buttonStyle}>
         Rematch
       </button>
 
       {/* Button to decrement the count */}
-      <button onClick={handleDecrement} style={buttonStyle}>
+      <button onClick={handleDisconnect} style={buttonStyle}>
         Disconnect
       </button>
     </div>

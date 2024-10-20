@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { initSocket } from '../socket';
 
 function login({ setIsLoggedIn, isLoggedIn }) {
   const [nickname , setnickname] = useState("");
@@ -21,6 +22,9 @@ function login({ setIsLoggedIn, isLoggedIn }) {
                 console.log(userData);
                 const userID = result.data.user.nickname;
                 console.log(userID);
+                
+
+                initSocket(); // Initialize the socket connection
 
                 sessionStorage.setItem("userId", userID);
                 
