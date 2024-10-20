@@ -24,6 +24,9 @@ const io = new Server(server, {
   },
 });
 
+let count = 0;
+const rooms = {}; //for creating socket rooms
+
 io.on('connection', (socket) => {
   console.log(
     'a user connected:',
@@ -35,14 +38,88 @@ io.on('connection', (socket) => {
   );
   io.emit('total connected:', io.engine.clientsCount);
 
+  socket.on('joinRoom', (room) => {
+    let assignedRoom = room;
 
+    if (!rooms[assignedRoom]) {  // Create the room if it doesn't exist
+        rooms[assignedRoom] = [];
+    }
+  
+    // Check if the socket is already in the room
+    if (rooms[assignedRoom].includes(socket.id)) {
+        console.log(`User ${socket.id} is already in room ${assignedRoom}`);
+        return; // Prevent joining again
+    }
+  
+    // Check if the requested room has space
+    if (rooms[assignedRoom] && rooms[assignedRoom].length < 2) {
+      rooms[assignedRoom].push(socket.id);
+      socket.join(assignedRoom);
+      console.log(`User ${socket.id} joined room ${assignedRoom}`);
+  
+        // Notify the user that they've joined
+        socket.emit('roomJoined', assignedRoom);
+  
+        // Notify other users in the room
+        socket.to(assignedRoom).emit('userJoined', socket.id);
+    } else {
+        // If the requested room is full, find a new room or create a new one
+      const existingRoom = Object.keys(rooms).find(room => rooms[room].length < 2);
 
+      if(existingRoom) { 
+        assignedRoom = existingRoom;
+        if (rooms[assignedRoom].includes(socket.id)) {
+          console.log(`User ${socket.id} is already in room ${assignedRoom}`);
+          return; // Prevent joining again
+      }
+        rooms[assignedRoom].push(socket.id);
+        socket.join(assignedRoom);
+        console.log(`User ${socket.id} joined existing room ${assignedRoom}`);
+        socket.emit('roomJoined', assignedRoom);
+        socket.to(assignedRoom).emit('userJoined', socket.id);
+      } else {
+        // Create a new room if none are available
+        assignedRoom = `room_${Date.now()}`; // Create a unique room name
+        rooms[assignedRoom] = [socket.id]; // Add the new user to the new room
+        socket.join(assignedRoom);
+        console.log(`User ${socket.id} created and joined new room ${assignedRoom}`);
+        socket.emit('roomJoined', assignedRoom);
+      }
+    }
+  });
 
+  socket.on('updateCount', (newCount) => {
+    // Emit the updated count to all users in the room
+    const roomsList = Object.keys(rooms);
+    for (const room of roomsList) {
+      if (rooms[room].includes(socket.id)) {
+        socket.to(room).emit('countUpdated', newCount);
+        break; // Exit after finding the user's room
+      }
+    }
+  });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id,
-      'total connected:', io.engine.clientsCount
+      'Total connected:', io.engine.clientsCount
     );
+
+    // Remove user from all rooms they are in
+    for (const room of Object.keys(rooms)) {
+      const index = rooms[room].indexOf(socket.id);
+      if (index !== -1) {
+        rooms[room].splice(index, 1); // Remove the user from the room
+        socket.to(room).emit('userDisconnected', socket.id); // Notify others in the room
+
+        // If the room is empty, delete it (optional)
+        if (rooms[room].length === 0) {
+          delete rooms[room]; // Clean up empty rooms
+        }
+
+        console.log(`User ${socket.id} left room ${room}`);
+        break; // Exit after finding the user's room
+      }
+    }
   });
 });
 
