@@ -6,7 +6,6 @@ import avatarWin from "../assets/images/avatar-win.png";
 import victoryHeader from "../assets/images/victory-header.png";
 
 const Victory = () => {
-  // Declare a state variable 'count' and a setter function 'setCount'
   const [userScore, setUserScore] = useState(0);
   const [opponentScore, setOpponentScore] = useState(0);
   const [error, setError] = useState(null);
@@ -53,8 +52,6 @@ const Victory = () => {
             disconnectSocket();
             sessionStorage.removeItem("userId");
             sessionStorage.removeItem("opponentId");
-            sessionStorage.removeItem("userScore");
-            sessionStorage.removeItem("opponentScore");
             Navigate("/login")
         })
         .catch(err => setError(console.log(err)));
