@@ -77,7 +77,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
         <button type="submit">Join Game</button>
       </form>
       
-      <p class="font-montserrat font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/user/register">Sign Up</Link></p>      
+      <p class="font-montserrat font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
 
 
       {/* Display error if there is one */} 
