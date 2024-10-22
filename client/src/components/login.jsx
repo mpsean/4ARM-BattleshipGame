@@ -1,3 +1,4 @@
+import logoImg from '../assets/images/front-logo.png';
 import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,11 +36,16 @@ function login({ setIsLoggedIn, isLoggedIn }) {
           .catch(err => setError(console.log(err)));
   };
   return (
-    <div>
-      <h1>This is login page</h1>
+    <section class="relative bg-front bg-cover bg-gray-800 bg-blend-normal h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex items-center justify-center">
+    <div class="flex-grow-0 justify-center px-36 py-16 bg-white/70 rounded-3xl">
+      <img 
+        src={logoImg}
+        width={300}
+      />
+      <h1 class="font-montserrat pt-4 font-bold text-3xl text-sky-900">Login</h1>
       
       {/* Form submission logic with React */}
-      <form id="nameForm" onSubmit={handleSubmit}>
+      <form class="font-montserrat" id="nameForm" onSubmit={handleSubmit}>
         {/* Label omitted for simplicity */}
         <input 
           type="text" 
@@ -62,12 +68,13 @@ function login({ setIsLoggedIn, isLoggedIn }) {
         <button type="submit">Join Game</button>
       </form>
       
-      <p>Don't have an account? <Link to="/user/register">SignUp</Link></p>      
+      <p class="font-montserrat font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/user/register">Sign Up</Link></p>      
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
     </div>
+    </section>
   );
 };
 
