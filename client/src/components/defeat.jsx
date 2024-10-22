@@ -1,5 +1,89 @@
-function Defeat() {
-    return <div>Defeat Screen</div>;
-}
+import React, { useState } from 'react';
+import axios from "axios";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { disconnectSocket } from '../socket';
+import defeatAvatar from "../assets/images/avatar-lose.png";
+import defeatHeader from "../assets/images/defeat-header.png";
+
+const Defeat = () => {
+  // Declare a state variable 'count' and a setter function 'setCount'
+  const [count, setCount] = useState(0);
+  const [error, setError] = useState(null);
+  const Navigate = useNavigate();
+  const userId = sessionStorage.getItem("userId");
+
+
+  // Function to handle incrementing the count
+  const handleRematch = () => {
+    Navigate("/game")
+  };
+
+  // Function to handle decrementing the count
+  const handleDisconnect = () => {
+    axios.put(`http://localhost:3001/result/${userId}/resetScore`)
+        .then(result => {
+            console.log(result);
+            disconnectSocket();
+            sessionStorage.removeItem("userId");
+            Navigate("/login")
+        })
+        .catch(err => setError(console.log(err)));
+  };
+
+  return (
+    // <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <section class="flex h-screen w-screen bg-gray-500 justify-center items-center">
+    <div class="flex flex-col justify-center h-700 w-300">
+      <div class="flex justify-center items-center">
+      <img 
+          src={defeatHeader}
+          width= {800}
+          class=""
+      />
+      </div>
+      <div class="flex justify-center items-center">
+        <h2 class="font-montserrat text-2xl text-white font-bold pb-10">
+          NAME won. {/**put name var here */}
+        </h2>
+      </div>
+      <div class="flex flex-col justify-between items-center gap-2 pb-20">
+        <div class="flex flex-1 items-center w-3/5">
+          <p class="font-montserrat font-medium text-3xl text-white w-96">NAME1</p>
+          <div class="flex gap-8 w-48 justify-center">
+            <p class="font-montserrat font-medium text-3xl w-12 text-white text-center">1</p>
+            <div class="bg-green-700 w-24">
+              <p class="m-2 font-montserrat text-center">STATUS</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-1 items-center w-3/5">
+          <p class="font-montserrat font-medium text-3xl text-white w-96">NAME2</p>
+          <div class="flex gap-8 w-48 justify-center">
+            <p class="font-montserrat font-medium text-3xl w-12 text-white text-center">0</p>
+            <div class="bg-cyan-500 w-24">
+              <p class="m-2 font-montserrat text-center">STATUS</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 grid-rows-2 gap-40">
+        <button onClick={handleRematch} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none ring-4 ring-white text-white rounded-full bg-sky-700">
+            Rematch
+        </button>
+        <img
+          src={defeatAvatar}
+          height={100}
+          width={200}
+          class="row-start-1 row-span-2"
+        />
+        <button onClick={handleDisconnect} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none ring-4 ring-white text-white rounded-full bg-sky-700">
+            Disconnect
+        </button>
+      </div>
+    </div>
+    </section>
+  );
+};
 
 export default Defeat;
