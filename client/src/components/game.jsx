@@ -12,6 +12,8 @@ const Game = () => {
 
   const [room, setRoom] = useState('testroom');
 
+  const [opponentName, setOpponentName] = useState(null);
+
   const Navigate = useNavigate();
 
   const userId = sessionStorage.getItem("userId");
@@ -20,7 +22,7 @@ const Game = () => {
 
   useEffect(() => {
 
-    socket.emit('joinRoom', room);
+    socket.emit('joinRoom', {room: room, playerName: userId});
 
     // Listen for the 'countUpdated' event to update the count on all clients
     socket.on("countUpdated", (newCount) => {
@@ -32,10 +34,18 @@ const Game = () => {
         setRoom(room);
         });
 
+    
+        socket.on("userJoined", (name) => {
+          setOpponentName(name); // Store opponent's name
+          sessionStorage.setItem("opponentId", name);
+          console.log(`Your opponent is: ${name}`);
+        });
+
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("countUpdated");
       socket.off("roomJoined");
+      socket.off("userJoined");
     };
   }, [room,socket]);
 
@@ -44,10 +54,13 @@ const Game = () => {
   const handleWin = () => {
     axios.put(`http://localhost:3001/result/${userId}/updateScore`)
         .then(result => {
-            console.log(result);
             Navigate("/victory")
         })
         .catch(err => setError(console.log(err)));
+  };
+
+  const handleLose = () => {
+    
   };
 
   const handleIncrement = () => {
@@ -85,6 +98,10 @@ const Game = () => {
       {/* Button to handle Win */}
       <button onClick={handleWin} style={buttonStyle}>
         Win
+      </button>
+
+      <button onClick={handleLose} style={buttonStyle}>
+        Lose
       </button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
