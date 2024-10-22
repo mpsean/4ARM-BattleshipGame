@@ -25,6 +25,7 @@ const io = new Server(server, {
 });
 
 let count = 0;
+let assignedRoom = '';
 const rooms = {}; //for creating socket rooms
 
 io.on('connection', (socket) => {
@@ -39,7 +40,6 @@ io.on('connection', (socket) => {
   io.emit('total connected:', io.engine.clientsCount);
 
   socket.on('joinRoom', ({room,playerName}) => {
-    let assignedRoom = room;
 
     if (!rooms[assignedRoom]) {  // Create the room if it doesn't exist
         rooms[assignedRoom] = [];
