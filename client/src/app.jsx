@@ -3,6 +3,9 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import Home from './landing.jsx'
 import Register from './components/register.jsx'
 import Login from './components/login.jsx'
+import Victory from './components/victory.jsx'
+import Defeat from './components/defeat.jsx'
+import Game from './components/game.jsx'
 
 //this app is define path
 
@@ -11,8 +14,11 @@ function App(){
     <BrowserRouter>
     <Routes>
       <Route index element={<Home />}></Route>
-      <Route path='/user/register' element={<Register />}></Route>
-      <Route path='/user/login' element={<Login />}></Route>
+      <Route path='/register' element={<Register />}></Route>
+      <Route path='/login' element={<Login />}></Route>
+      <Route path='/victory' element={<Victory />}></Route>
+      <Route path='/defeat' element={<Defeat />}></Route>
+      <Route path='/game' element={<Game />}></Route>
     </Routes>
     </BrowserRouter>
   )
