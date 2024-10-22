@@ -17,16 +17,14 @@ const App = () => {
                 />
                 <div className="flex gap-10 pt-20">
                   <a href={"/login"}>
-                  <button className="flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none bg-coral-red text-white rounded-full bg-sky-700">
+                  <button className="flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none ring-4 ring-white border-white text-white rounded-full bg-sky-700">
                     Simple Mode
                   </button>
                   </a>
                   <a href={"/login"}>
-                  <div>
-                  <button className="flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none bg-coral-red text-white rounded-full bg-sky-700">
+                  <button className="flex justify-center items-center gap-2 px-7 py-4 font-montserrat font-bold text-xl leading-none ring-4 ring-white text-white rounded-full bg-sky-700">
                     Advanced Mode
                   </button>
-                  </div>
                   </a>
                 </div>
               </div>
