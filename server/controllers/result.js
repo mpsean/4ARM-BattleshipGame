@@ -46,4 +46,16 @@ export const resetScore = async (req, res) => {
     }
 }
 
+export const getScore = async (req, res) => {
+    try {
+        const { nickname } = req.params; 
+        const player = await UserModel.findOne(
+            { nickname : nickname } ,             
+        );
+        return res.status(200).json({score : player.score});
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to get player score', error });
+    }
+}
+
 export default router;
