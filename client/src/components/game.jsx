@@ -60,7 +60,7 @@ const Game = () => {
   };
 
   const handleLose = () => {
-    
+    Navigate("/defeat")
   };
 
   const handleIncrement = () => {
