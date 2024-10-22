@@ -2,6 +2,7 @@ import logoImg from '../assets/images/front-logo.png';
 import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { initSocket } from '../socket';
 
 function login({ setIsLoggedIn, isLoggedIn }) {
   const [nickname , setnickname] = useState("");
@@ -13,15 +14,23 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 
   const handleSubmit  = (e) => {
       e.preventDefault();
-      axios.post("http://localhost:3001/user/login", { nickname, password })
+      axios.post(`http://localhost:3001/user/login`, { nickname, password })
           .then(result => {
               if (result.data.message === "Login successful") {
                 console.log("Login successful")
 
                 const userData = result.data.user; // Adjust based on your actual response structure
+                console.log(userData);
+                const userID = result.data.user.nickname;
+                console.log(userID);
+                
+
+                initSocket(); // Initialize the socket connection
+
+                sessionStorage.setItem("userId", userID);
                 
                 // Navigate to the home page with user data
-                navigate("/home", { state: { user: userData } });
+                navigate("/game", { state: { user: userData } });
               } 
               if (result.data.message === "Invalid credentials") {
                 console.log("Invalid credentials")
@@ -69,6 +78,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
       </form>
       
       <p class="font-montserrat font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/user/register">Sign Up</Link></p>      
+
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}
