@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from '../socket';
+import Gameview from './gameview.jsx'
+
 
 const Game = () => {
   //const [count, setCount] = useState(0);
@@ -105,7 +107,11 @@ const Game = () => {
       </button>
 
       {error && <p style={{ color: 'red' }}>{error}</p>}
+
+      <Gameview/>
+
     </div>
+
   );
 };
 
