@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PlaceshipGrid from './placeShip/placeShip.jsx'
+import PlaceshipGrid, {createShips} from './placeShip/placeShip.jsx'
 
 const Gameview = () => {
   const [grid, setGrid] = useState([]);
@@ -23,6 +23,7 @@ const Gameview = () => {
     const updatedGrid = [...grid];
 
     const playerGrid = <PlaceshipGrid />;
+
 
     //update playergrid(playerGrid)
     updatedGrid[0] = playerGrid; 
