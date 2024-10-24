@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from '../socket';
 import Gameview from './gameview.jsx'
+import { ShipPositionProvider, useGlobalShipPosition }  from './placeShip/placeShip.jsx'
 
 
 const Game = () => {
@@ -83,35 +84,55 @@ const Game = () => {
     socket.emit("updateCount", newCount);
   };
 
+  //GAME LOGIC ------------------------------------------------------------------------------
+//  console.log("this is from game.jsx")
+//  console.log(globalShipPosition)
+const {globalShipPosition , setGlobalShipPosition} = useGlobalShipPosition()
+
+// const updateGlobalShipPosition = () => {
+//     setGlobalShipPosition = useGlobalShipPosition()
+// }
+
+const handleglobalShipPositionLog = () => {
+    //updateGlobalShipPosition()
+    console.log("this works")
+    console.log(JSON.stringify(globalShipPosition, null, 2))
+};
+
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h2>Count: {count}</h2>
-      
-      {/* Button to increment the count */}
-      <button onClick={handleIncrement} style={buttonStyle}>
-        Increment
-      </button>
+    <ShipPositionProvider>
+      <div style={{ textAlign: "center", marginTop: "50px" }}>
+        <h2>Count: {count}</h2>
 
-      {/* Button to decrement the count */}
-      <button onClick={handleDecrement} style={buttonStyle}>
-        Decrement
-      </button>
+        {/* Button to increment the count */}
+        <button onClick={handleIncrement} style={buttonStyle}>
+          Increment
+        </button>
 
-      {/* Button to handle Win */}
-      <button onClick={handleWin} style={buttonStyle}>
-        Win
-      </button>
+        {/* Button to decrement the count */}
+        <button onClick={handleDecrement} style={buttonStyle}>
+          Decrement
+        </button>
 
-      <button onClick={handleLose} style={buttonStyle}>
-        Lose
-      </button>
+        {/* Button to handle Win */}
+        <button onClick={handleWin} style={buttonStyle}>
+          Win
+        </button>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <button onClick={handleLose} style={buttonStyle}>
+          Lose
+        </button>
 
-      <Gameview/>
+        <button onClick={handleglobalShipPositionLog} style={buttonStyle}>
+          ShipPosition
+        </button>
 
-    </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
+        {/* Gameview component that might use globalShipPosition */}
+        <Gameview />
+      </div>
+    </ShipPositionProvider>
   );
 };
 
