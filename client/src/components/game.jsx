@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from '../socket';
-import Gameview from './gameview.jsx'
-import { ShipPositionProvider, useGlobalShipPosition }  from './placeShip/placeShip.jsx'
+
+import { WelcomeScreen } from './WelcomeScreen.jsx';
+import { Main } from './Simple/Main.jsx';
+
+import './css/main.css';
 
 
 const Game = () => {
@@ -85,22 +88,13 @@ const Game = () => {
   };
 
   //GAME LOGIC ------------------------------------------------------------------------------
-//  console.log("this is from game.jsx")
-//  console.log(globalShipPosition)
-const {globalShipPosition , setGlobalShipPosition} = useGlobalShipPosition()
+  const [appState, setAppState] = useState('welcome'); // play or welcome
 
-// const updateGlobalShipPosition = () => {
-//     setGlobalShipPosition = useGlobalShipPosition()
-// }
-
-const handleglobalShipPositionLog = () => {
-    //updateGlobalShipPosition()
-    console.log("this works")
-    console.log(JSON.stringify(globalShipPosition, null, 2))
-};
+  const startPlay = () => {
+    setAppState('play');
+  };
 
   return (
-    <ShipPositionProvider>
       <div style={{ textAlign: "center", marginTop: "50px" }}>
         <h2>Count: {count}</h2>
 
@@ -123,16 +117,15 @@ const handleglobalShipPositionLog = () => {
           Lose
         </button>
 
-        <button onClick={handleglobalShipPositionLog} style={buttonStyle}>
-          ShipPosition
-        </button>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        {/* Gameview component that might use globalShipPosition */}
-        <Gameview />
+        {/* Implemented Game */}
+        <h1> Battleshiplogo</h1>
+      
+        {appState === 'play' ? <Main /> : <WelcomeScreen startPlay={startPlay} />}
+      
       </div>
-    </ShipPositionProvider>
   );
 };
 
