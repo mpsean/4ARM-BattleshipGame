@@ -1,5 +1,5 @@
-export const BOARD_ROWS = 10;
-export const BOARD_COLUMNS = 10;
+export const BOARD_ROWS = 8;
+export const BOARD_COLUMNS = 8;
 export const BOARD = BOARD_COLUMNS * BOARD_ROWS;
 
 export const SQUARE_STATE = {
@@ -78,7 +78,7 @@ export const isWithinBounds = (entity) => {
   );
 };
 
-// Place an entity on a layout
+// Place an entity on a layout, change layout
 export const putEntityInLayout = (oldLayout, entity, type) => {
   let newLayout = oldLayout.slice();
 
@@ -137,7 +137,11 @@ export const placeAllComputerShips = (computerShips) => {
 
   return computerShips.map((ship) => {
     while (true) {
+      //input ship here
+      // let decoratedShip = inputShip;
+
       let decoratedShip = randomizeShipProps(ship);
+      console.log(JSON.stringify(decoratedShip, null, 2))
 
       if (canBePlaced(decoratedShip, compLayout)) {
         compLayout = putEntityInLayout(compLayout, decoratedShip, SQUARE_STATE.ship);

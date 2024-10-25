@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from '../socket';
 
-import { WelcomeScreen } from './WelcomeScreen.jsx';
+//import { WelcomeScreen } from './WelcomeScreen.jsx';
 import { Main } from './Simple/Main.jsx';
 
 import './css/main.css';
@@ -88,11 +88,6 @@ const Game = () => {
   };
 
   //GAME LOGIC ------------------------------------------------------------------------------
-  const [appState, setAppState] = useState('welcome'); // play or welcome
-
-  const startPlay = () => {
-    setAppState('play');
-  };
 
   return (
       <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -123,7 +118,7 @@ const Game = () => {
         {/* Implemented Game */}
         <h1> Battleshiplogo</h1>
       
-        {appState === 'play' ? <Main /> : <WelcomeScreen startPlay={startPlay} />}
+        <Main />
       
       </div>
   );
