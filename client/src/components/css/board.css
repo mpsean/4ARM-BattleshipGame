@@ -12,8 +12,8 @@
 }
 
 .board div {
-  width: 10%;
-  height: 10%;
+  width: 12.5%;
+  height: 12.5%;
   box-sizing: border-box;
   background: var(--oc-gray-1);
   border: 1px solid var(--oc-gray-2);

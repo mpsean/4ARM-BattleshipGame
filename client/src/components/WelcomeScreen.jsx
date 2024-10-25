@@ -1,8 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-export const WelcomeScreen = ({ startPlay }) => {
+
+const WelcomeScreen = ({ startPlay }) => {
   const userId = sessionStorage.getItem("userId");
   const opponentId = "maipro"
+
+  const Navigate = useNavigate();
 
   //Wait for non
 
@@ -15,8 +19,12 @@ export const WelcomeScreen = ({ startPlay }) => {
   //     return;
   //   } },[userId, opponentId]);
 
+  const startGame = () => {
+    Navigate("/game")
+  };
+
   return (
-    <main>
+    <div>
       <h2 className="tip-box-title">Rules</h2>
       <h2>Welcome {userId}</h2>
       <p className="player-tip">
@@ -25,7 +33,10 @@ export const WelcomeScreen = ({ startPlay }) => {
         to sink the other person’s whole fleet wins!
       </p>
       <h2>Your opponent is {opponentId}</h2>
-      <button onClick={startPlay}>Play</button>
-    </main>
+      <button onClick={startGame}>Play</button>
+    </div>
   );
 };
+
+export default WelcomeScreen;
+

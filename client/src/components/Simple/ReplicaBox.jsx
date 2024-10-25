@@ -19,6 +19,7 @@ export const ReplicaBox = ({
       key={`${shipName}`}
       className={isCurrentlyPlacing ? 'replica placing' : 'replica'}
     >
+      <h4>ReplicaBox</h4>
       <div className="replica-title">{shipName}</div>
       <div className="replica-squares">{allReplicaSquares}</div>
     </div>

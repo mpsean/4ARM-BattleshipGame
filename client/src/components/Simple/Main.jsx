@@ -19,7 +19,7 @@ import {
 const AVAILABLE_SHIPS = [
   {
     name: 'carrier',
-    length: 5,
+    length: 4,
     placed: null,
   },
   {
@@ -29,17 +29,17 @@ const AVAILABLE_SHIPS = [
   },
   {
     name: 'cruiser',
-    length: 3,
+    length: 4,
     placed: null,
   },
   {
     name: 'submarine',
-    length: 3,
+    length: 4,
     placed: null,
   },
   {
     name: 'destroyer',
-    length: 2,
+    length: 4,
     placed: null,
   },
 ];
@@ -96,6 +96,7 @@ export const Main = () => {
     }
   };
 
+  //when click button
   const startTurn = () => {
     generateComputerShips();
     setGameState('player-turn');
@@ -108,6 +109,9 @@ export const Main = () => {
   };
 
   // *** COMPUTER ***
+
+  //we gotta take export of placedShip then set it in setComputerShips(placedShip)
+
   const generateComputerShips = () => {
     let placedComputerShips = placeAllComputerShips(AVAILABLE_SHIPS.slice());
     setComputerShips(placedComputerShips);
