@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-    origin: `http://localhost:5173`, // Replace with your frontend's URL
+    origin: `*`, // Replace with your frontend's URL
     // No credentials required
 }));
 
