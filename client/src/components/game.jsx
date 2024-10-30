@@ -16,10 +16,6 @@ const Game = () => {
 
   const [count, setCount] = useState(0);
 
-  const [room, setRoom] = useState('testroom');
-
-  const [opponentName, setOpponentName] = useState(null);
-
   const Navigate = useNavigate();
 
   const userId = sessionStorage.getItem("userId");
@@ -28,32 +24,17 @@ const Game = () => {
 
   useEffect(() => {
 
-    socket.emit('joinRoom', {room: room, playerName: userId});
 
     // Listen for the 'countUpdated' event to update the count on all clients
     socket.on("countUpdated", (newCount) => {
       setCount(newCount);
     });
 
-    socket.on('roomJoined', (room) => {
-        console.log(`Joined room ${room}`);
-        setRoom(room);
-        });
-
-    
-        socket.on("userJoined", (name) => {
-          setOpponentName(name); // Store opponent's name
-          sessionStorage.setItem("opponentId", name);
-          console.log(`Your opponent is: ${name}`);
-        });
-
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("countUpdated");
-      socket.off("roomJoined");
-      socket.off("userJoined");
     };
-  }, [room,socket]);
+  }, );
 
   //console.log(userId);
   // Function to handle incrementing the count

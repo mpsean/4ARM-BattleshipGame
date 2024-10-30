@@ -25,7 +25,7 @@ const io = new Server(server, {
 });
 
 let count = 0;
-let assignedRoom = '';
+let assignedRoom = 'test';
 const rooms = {}; //for creating socket rooms
 
 io.on('connection', (socket) => {
