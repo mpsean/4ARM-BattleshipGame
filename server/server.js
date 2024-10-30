@@ -25,7 +25,7 @@ const io = new Server(server, {
 });
 
 let count = 0;
-let assignedRoom = '';
+let assignedRoom = 'test';
 const rooms = {}; //for creating socket rooms
 
 io.on('connection', (socket) => {
@@ -131,7 +131,7 @@ io.on('connection', (socket) => {
 });
 
 app.use(cors({
-    origin: `http://localhost:5173`, // Replace with your frontend's URL
+    origin: `*`, // Replace with your frontend's URL
     // No credentials required
 }));
 
