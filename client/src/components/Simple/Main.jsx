@@ -96,6 +96,11 @@ export const Main = () => {
     }
   };
 
+  const exportShip = () => {
+    console.log(JSON.stringify(placeShip, null, 2))
+    return placeShip;
+  }
+
   //when click button
   const startTurn = () => {
     generateComputerShips();
@@ -138,6 +143,7 @@ export const Main = () => {
         },
       ];
     }
+    //update hit
     const sunkShips = updateSunkShips(computerHits, placedShips);
     const sunkShipsAfter = sunkShips.filter((ship) => ship.sunk).length;
     const sunkShipsBefore = placedShips.filter((ship) => ship.sunk).length;
@@ -252,9 +258,9 @@ export const Main = () => {
     setGameState('placement');
     setWinner(null);
     setCurrentlyPlacing(null);
-    setPlacedShips([]);
+    setPlacedShips([]); //our grid
     setAvailableShips(AVAILABLE_SHIPS);
-    setComputerShips([]);
+    setComputerShips([]); //enemy grid
     setHitsByPlayer([]);
     setHitsByComputer([]);
   };
