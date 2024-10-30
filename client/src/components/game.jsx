@@ -112,11 +112,15 @@ const Game = () => {
           Lose
         </button>
 
+        {/* <button onClick={exportShip} style={buttonStyle}>
+          ExportShip
+        </button> */}
+
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         {/* Implemented Game */}
-        <h1> Battleshiplogo</h1>
+        <h1> Battleshiplogo1</h1>
       
         <Main />
       
