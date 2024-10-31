@@ -111,37 +111,36 @@ io.on('connection', (socket) => {
   });
 
   //** get placeship */
-  socket.on('sendPlayerPlaceShip', (data) => {
-    console.log("sendPlayerPlaceShip");
-    console.log(socket.id);
-    const existingRoom = Object.keys(rooms).find(room => rooms[room].length < 2);
-    console.log("existroom ",existingRoom)
-    // const existingRoom2 = Object.keys(rooms).find(room => rooms[room].findIndex(v => v.includes(socket.id)))
-
-    // console.log("existroom2 ",existingRoom2)
-
-
-
-    // Find the room that contains the player's socket ID
-    const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
-    console.log("Found room ID:", roomId);
+    // have flag
+    socket.on('sendPlayerPlaceShip', (data) => {
+      console.log("sendPlayerPlaceShip");
   
-    if (roomId) {
-      // Find the opponent's socket ID within the room
+      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
+      if (!roomId) {
+        console.log("Room ID is null; player is not in any room.");
+        return;
+      }
+      const playerIndex = rooms[roomId].findIndex(player => player.id === socket.id);
+      const player = rooms[roomId][playerIndex];
+  
+      // Check if the player has already placed their ship
+      if (player.hasPlacedShip) {
+        console.log(`Player ${socket.id} has already placed their ship, ignoring.`);
+        return;
+      }
+  
+      // Mark the player as having placed their ship
+      rooms[roomId][playerIndex].hasPlacedShip = true;
       const opponent = rooms[roomId].find(player => player.id !== socket.id);
-      const opponentId = opponent ? opponent.id : null;
       
-      if (opponentId) {
-        // Send the player's data to the opponent
-        console.log(`Sending data to opponent (ID: ${opponentId})`);
-        socket.to(opponentId).emit('receiveOppPlaceShip', data);
+      if (opponent) {
+        console.log(`Sending data to opponent (ID: ${opponent.id})`);
+        socket.to(opponent.id).emit('receiveOppPlaceShip', data);
       } else {
         console.log("Opponent not found in room.");
       }
-    } else {
-      console.log("Room ID is null; player is not in any room.");
-    }
-  });
+    });
+  
   
 
   // socket.on('sendPlayerPlaceShip', (data) => {

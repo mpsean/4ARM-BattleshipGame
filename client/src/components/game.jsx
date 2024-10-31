@@ -24,8 +24,23 @@ const Game = () => {
 
   const socket = getSocket(); // Get the existing socket instance
 
-  useEffect(() => {
+  //GAME LOGIC ------------------------------------------------------------------------------
+  
+  const [myPlaceShip, setMyPlaceShip] = useState(null);
+  const [oppPlaceShip, setOppPlaceShip] = useState(null);
 
+  // Emit player data to server
+  function updatePlacedShip() {
+    if(myPlaceShip){
+      socket.emit('sendPlayerPlaceShip', myPlaceShip);
+      console.log("send data")
+    }
+  }
+  // useEffect(() => {
+  //   updatePlacedShip();
+  // }, [myPlaceShip, oppPlaceShip]);
+
+  useEffect(() => {
 
     // Listen for the 'countUpdated' event to update the count on all clients
     socket.on("countUpdated", (newCount) => {
@@ -77,22 +92,9 @@ const Game = () => {
     socket.emit("updateCount", newCount);
   };
 
-  //GAME LOGIC ------------------------------------------------------------------------------
-  
-  const [myPlaceShip, setMyPlaceShip] = useState(null);
-  const [oppPlaceShip, setOppPlaceShip] = useState(null);
-
-  // Emit player data to server
-  function updatePlacedShip() {
-    if(myPlaceShip){
-      socket.emit('sendPlayerPlaceShip', myPlaceShip);
-      console.log("send data")
-    }
-  }
 
 
-
-  updatePlacedShip();
+  // updatePlacedShip();
 
   return (
 <div className="flex flex-col h-screen w-screen bg-sky-400 justify-center items-center">
@@ -147,6 +149,7 @@ const Game = () => {
 
 
 <Main oppPlaceShip={oppPlaceShip} setMyPlaceShip={setMyPlaceShip} />
+<button onClick={updatePlacedShip()}> send data</button>
 
 
 </div>

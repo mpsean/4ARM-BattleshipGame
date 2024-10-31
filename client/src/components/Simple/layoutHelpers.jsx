@@ -141,7 +141,7 @@ export const placeAllComputerShips = (computerShips) => {
       // let decoratedShip = inputShip;
 
       let decoratedShip = randomizeShipProps(ship);
-      console.log(JSON.stringify(decoratedShip, null, 2))
+      // console.log(JSON.stringify(decoratedShip, null, 2))
 
       if (canBePlaced(decoratedShip, compLayout)) {
         compLayout = putEntityInLayout(compLayout, decoratedShip, SQUARE_STATE.ship);
