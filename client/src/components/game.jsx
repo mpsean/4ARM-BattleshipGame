@@ -36,9 +36,7 @@ const Game = () => {
       console.log("send data")
     }
   }
-  // useEffect(() => {
-  //   updatePlacedShip();
-  // }, [myPlaceShip, oppPlaceShip]);
+
 
   useEffect(() => {
 
@@ -149,7 +147,6 @@ const Game = () => {
 
 
 <Main oppPlaceShip={oppPlaceShip} setMyPlaceShip={setMyPlaceShip} />
-<button onClick={updatePlacedShip()}> send data</button>
 
 
 </div>
