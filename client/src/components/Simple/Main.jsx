@@ -265,6 +265,12 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 
+  //useData when computership change
+    useEffect(() => {
+      if(computerShips&&oppPlaceShip){
+        useData();
+      }
+  }, [startTurn]);
 
 
   const startAgain = () => {
@@ -347,9 +353,6 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
         setComputerShips={setComputerShips}
         playSound={playSound}
       />
-      {/* <button onClick={sendDataToParent}>Send PlaceShip to Parent</button> */}
-      <button onClick={useData}>use PlaceShip from Parent</button>
-
     </React.Fragment>
   );
 };
