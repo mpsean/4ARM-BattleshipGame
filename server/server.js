@@ -53,7 +53,11 @@ io.on('connection', (socket) => {
   
     // Check if the requested room has space
     if (rooms[assignedRoom] && rooms[assignedRoom].length < 2) {
-      rooms[assignedRoom].push({ id: socket.id, name: playerName });
+      rooms[assignedRoom].push({ 
+        id: socket.id, 
+        hasPlacedShip: false,
+        lastSentData: null, // Initialize lastSentData for data tracking
+      });
       socket.join(assignedRoom);
       console.log(`User ${socket.id} joined room ${assignedRoom}`);
   
@@ -123,16 +127,17 @@ io.on('connection', (socket) => {
       const playerIndex = rooms[roomId].findIndex(player => player.id === socket.id);
       const player = rooms[roomId][playerIndex];
   
-      // Check if the player has already placed their ship
-      if (player.hasPlacedShip) {
-        console.log(`Player ${socket.id} has already placed their ship, ignoring.`);
+      // Check if the data has changed
+      if (JSON.stringify(player.lastSentData) === JSON.stringify(data)) {
+        console.log("Data has not changed, skipping emit.");
         return;
       }
   
-      // Mark the player as having placed their ship
+      // Update lastSentData and mark player as having placed their ship
+      player.lastSentData = data;
       rooms[roomId][playerIndex].hasPlacedShip = true;
+  
       const opponent = rooms[roomId].find(player => player.id !== socket.id);
-      
       if (opponent) {
         console.log(`Sending data to opponent (ID: ${opponent.id})`);
         socket.to(opponent.id).emit('receiveOppPlaceShip', data);
@@ -140,46 +145,6 @@ io.on('connection', (socket) => {
         console.log("Opponent not found in room.");
       }
     });
-  
-  
-
-  // socket.on('sendPlayerPlaceShip', (data) => {
-
-  //   console.log("sendPlayerPlaceShip")
-
-
-  //   const roomsList = Object.keys(rooms);
-  //     for (const room of roomsList) {
-  //       if (rooms[room].some(player => player.id === socket.id)) {
-  //         const opponentId = rooms[room].find(id => id !== socket.id);
-  //         console.log(opponentId)
-  //         if (opponentId) {
-  //           // Send Player 1's data to Player 2
-  //           console.log("sending"+ {opponentId}+ "data")
-  //           socket.to(opponentId).emit('receiveOppPlaceShip', data);
-  //             socket.to(room).emit('countUpdated', newCount);
-  //             break; // Exit after finding the user's room
-  //         }
-  //       }
-  //     }
-  //   });
-
-//   const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id))
-//   console.log(player.id)
-//   console.log(socket.id)
-//   console.log(roomId)
-
-//   if (roomId) {
-//     // Find the opponent's socket ID
-//     const opponentId = rooms[roomId].find(id => id !== socket.id);
-
-//     if (opponentId) {
-//       // Send Player 1's data to Player 2
-//       console.log("sending"+ {opponentId}+ "data")
-//       socket.to(opponentId).emit('receiveOppPlaceShip', data);
-//     }
-//   }
-// });
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id,
