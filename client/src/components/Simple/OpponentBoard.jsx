@@ -42,6 +42,8 @@ export const ComputerBoard = ({
 
   // Check what's at the square and decide what next
   const fireTorpedo = (index) => {
+    console.log("we sent this hit to computer")
+    //if hit
     if (compLayout[index] === 'ship') {
       const newHits = [
         ...hitsByPlayer,
@@ -53,6 +55,7 @@ export const ComputerBoard = ({
       setHitsByPlayer(newHits);
       return newHits;
     }
+    //if miss
     if (compLayout[index] === 'empty') {
       const newHits = [
         ...hitsByPlayer,
@@ -90,6 +93,7 @@ export const ComputerBoard = ({
         onClick={() => {
           if (playerCanFire && !alreadyHit(index)) {
             const newHits = fireTorpedo(index);
+            //set newHits to opponent board
             const shipsWithSunkFlag = updateSunkShips(newHits, computerShips);
             const sunkShipsAfter = shipsWithSunkFlag.filter((ship) => ship.sunk).length;
             const sunkShipsBefore = computerShips.filter((ship) => ship.sunk).length;
@@ -105,8 +109,9 @@ export const ComputerBoard = ({
   });
 
   return (
-    <div>
-      <h2 className="player-title">Computer</h2>
+    <div className="p-5 m-2 bg-white/25 rounded-3xl">
+      <h2 className="font-museo text-2xl font-bold text-center text-white">Computer</h2>
+      <h1 className="font-museo text-xl font-medium text-center text-white">Score: 0</h1>
       <div className="board">{compSquares}</div>
     </div>
   );

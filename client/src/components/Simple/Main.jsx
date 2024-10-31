@@ -44,8 +44,7 @@ const AVAILABLE_SHIPS = [
   },
 ];
 
-
-export const Main = () => {
+export const Main = ({ oppPlaceShip, setMyPlaceShip }) => { 
   const [gameState, setGameState] = useState('placement');
   const [winner, setWinner] = useState(null);
 
@@ -96,14 +95,28 @@ export const Main = () => {
     }
   };
 
-  const exportShip = () => {
-    console.log(JSON.stringify(placeShip, null, 2))
-    return placeShip;
-  }
+
+  //**test */
+  const sendDataToParent = () => {
+    const data = placedShips;
+    setMyPlaceShip(data)
+    
+  };
+
+  const useData = () => {
+    const data = oppPlaceShip;
+    setComputerShips(data)
+    // const data = "test";
+    // onDataReceive(data); // Call the parent's function with the data
+  };
+
 
   //when click button
   const startTurn = () => {
+    console.log("start")
+    sendDataToParent();
     generateComputerShips();
+    // useData();
     setGameState('player-turn');
   };
 
@@ -220,14 +233,14 @@ export const Main = () => {
     let successfulComputerHits = hitsByComputer.filter((hit) => hit.type === 'hit')
       .length;
 
-    if (successfulComputerHits === 17 || successfulPlayerHits === 17) {
+    if (successfulComputerHits === 20 || successfulPlayerHits === 20) {
       setGameState('game-over');
 
-      if (successfulComputerHits === 17) {
+      if (successfulComputerHits === 20) {
         setWinner('computer');
         playSound('lose');
       }
-      if (successfulPlayerHits === 17) {
+      if (successfulPlayerHits === 20) {
         setWinner('player');
         playSound('win');
       }
@@ -334,6 +347,9 @@ export const Main = () => {
         setComputerShips={setComputerShips}
         playSound={playSound}
       />
+      {/* <button onClick={sendDataToParent}>Send PlaceShip to Parent</button> */}
+      <button onClick={useData}>use PlaceShip from Parent</button>
+
     </React.Fragment>
   );
 };
