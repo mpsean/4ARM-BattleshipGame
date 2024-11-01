@@ -29,14 +29,31 @@ const Game = () => {
   const [myPlaceShip, setMyPlaceShip] = useState(null);
   const [oppPlaceShip, setOppPlaceShip] = useState(null);
 
+  const [exportHitsByPlayer, setExportHitsByPlayer] = useState(null);
+  const [importHitReceived, setImportHitReceived] = useState(null);
+
   // Emit player data to server
   function updatePlacedShip() {
+    // console.log("updatePlacedShip sent to opponent")
     if(myPlaceShip){
       socket.emit('sendPlayerPlaceShip', myPlaceShip);
       console.log("send data")
     }
   }
 
+  function exportHit() {
+    if(exportHitsByPlayer){
+      socket.emit('sendHitsByPlayer', exportHitsByPlayer);
+      console.log("send hit")
+    }
+  }
+
+  //check exportHitsByPlayer changed
+
+  useEffect(() => {
+    console.log("exportHitsByPlayer update")
+    exportHit()
+}, [exportHitsByPlayer]);
 
   useEffect(() => {
 
@@ -50,10 +67,17 @@ const Game = () => {
       console.log("get data")
     });
 
+    socket.on('receiveHit', (data) => {
+      setImportHitReceived(data)
+      console.log("get hit")
+    });
+
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("countUpdated");
       socket.off("receiveOppPlaceShip");
+      socket.off("receiveHit");
+
 
     };
   }, );
@@ -92,7 +116,8 @@ const Game = () => {
 
 
 
-  // updatePlacedShip();
+  updatePlacedShip();
+  exportHit()
 
   return (
 <div className="flex flex-col h-screen w-screen bg-sky-400 justify-center items-center">
@@ -146,8 +171,11 @@ const Game = () => {
 {/* Implemented Game */}
 
 
-<Main oppPlaceShip={oppPlaceShip} setMyPlaceShip={setMyPlaceShip} />
-
+<Main 
+oppPlaceShip={oppPlaceShip} 
+setMyPlaceShip={setMyPlaceShip} 
+setExportHitsByPlayer={setExportHitsByPlayer} 
+importHitReceived={importHitReceived}/>
 
 </div>
 );

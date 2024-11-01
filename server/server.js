@@ -146,6 +146,37 @@ io.on('connection', (socket) => {
       }
     });
 
+    //** control Hit */
+    socket.on('sendHitsByPlayer', (data) => {
+      console.log("sendHitsByPlayer");
+  
+      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
+      if (!roomId) {
+        console.log("Room ID is null; player is not in any room. (control Hit)");
+        return;
+      }
+      const playerIndex = rooms[roomId].findIndex(player => player.id === socket.id);
+      const player = rooms[roomId][playerIndex];
+  
+      // Check if the data has changed
+      if (JSON.stringify(player.lastSentData) === JSON.stringify(data)) {
+        console.log("Data has not changed, skipping emit. (control Hit)");
+        return;
+      }
+  
+      // Update lastSentData 
+      player.lastSentData = data;
+      // rooms[roomId][playerIndex].hasPlacedShip = true;
+  
+      const opponent = rooms[roomId].find(player => player.id !== socket.id);
+      if (opponent) {
+        console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
+        socket.to(opponent.id).emit('receiveHit', data);
+      } else {
+        console.log("Opponent not found in room. (control Hit)");
+      }
+    });
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id,
       'Total connected:', io.engine.clientsCount
