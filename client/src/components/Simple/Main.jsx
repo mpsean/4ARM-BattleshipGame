@@ -44,7 +44,7 @@ const AVAILABLE_SHIPS = [
   },
 ];
 
-export const Main = ({ oppPlaceShip, setMyPlaceShip }) => { 
+export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived}) => { 
   const [gameState, setGameState] = useState('placement');
   const [winner, setWinner] = useState(null);
 
@@ -54,6 +54,9 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
   const [computerShips, setComputerShips] = useState([]);
   const [hitsByPlayer, setHitsByPlayer] = useState([]);
   const [hitsByComputer, setHitsByComputer] = useState([]);
+
+  const initExportHit = useRef(false); 
+  const initImportHit = useRef(false); 
 
   const Navigate = useNavigate();
 
@@ -96,7 +99,7 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
   };
 
 
-  //**test */
+  //*import/export */
   const sendDataToParent = () => {
     const data = placedShips;
     setMyPlaceShip(data)
@@ -106,8 +109,17 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
   const useData = () => {
     const data = oppPlaceShip;
     setComputerShips(data)
-    // const data = "test";
-    // onDataReceive(data); // Call the parent's function with the data
+  };
+
+  const exportHitToParent = () => {
+    const data = hitsByPlayer;
+    setExportHitsByPlayer(data)
+    
+  };
+
+  const importHit = () => {
+    const data = importHitReceived;
+    setHitsByComputer(data)
   };
 
 
@@ -116,7 +128,6 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
     console.log("start")
     sendDataToParent();
     generateComputerShips();
-    // useData();
     setGameState('player-turn');
   };
 
@@ -124,6 +135,7 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
     setGameState((oldGameState) =>
       oldGameState === 'player-turn' ? 'computer-turn' : 'player-turn'
     );
+
   };
 
   // *** COMPUTER ***
@@ -219,11 +231,44 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip }) => {
 
     let target = potentialTargets[randomIndex];
 
-    setTimeout(() => {
-      computerFire(target, layout);
-      changeTurn();
-    }, 300);
+    //remove the automatic computer shoot
+
+    // setTimeout(() => {
+    //   computerFire(target, layout);
+    //   changeTurn();
+    // }, 300);
   };
+
+//when hit by player changed -> export hit
+useEffect(() => {
+  console.log("successfully export hit to parent")
+  if (initExportHit.current) {
+    console.log("exportHitToParent")
+    setTimeout(() => {
+      exportHitToParent()
+      changeTurn();
+      console.log("next turn is",gameState)
+    }, 300);
+  } else {
+    initExportHit.current = true; // Set to true after the initial render
+  }
+}, [hitsByPlayer]);
+
+
+  //when importHitReceived changed -> import opponent hit
+  useEffect(() => {
+    console.log("successfully import hit from parent")
+    if (initImportHit.current) {
+      console.log("importHit")
+      setTimeout(() => {
+        importHit();
+        changeTurn();
+        console.log("next turn is",gameState)
+      }, 300);
+  } else {
+    initImportHit.current = true; // Set to true after the initial render
+  }
+}, [importHitReceived]);
 
   // *** END GAME ***
 
