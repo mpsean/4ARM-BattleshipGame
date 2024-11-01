@@ -363,18 +363,18 @@ useEffect(() => {
     <React.Fragment>
       <audio
         ref={sunkSoundRef}
-        src="/sounds/ship_sunk.wav"
+        src="../../assets/sounds/ship_sunk.wav"
         className="clip"
         preload="auto"
       />
       <audio
         ref={clickSoundRef}
-        src="/sounds/click.wav"
+        src="../../assets/sounds/click.wav"
         className="clip"
         preload="auto"
       />
-      <audio ref={lossSoundRef} src="/sounds/lose.wav" className="clip" preload="auto" />
-      <audio ref={winSoundRef} src="/sounds/win.wav" className="clip" preload="auto" />
+      <audio ref={lossSoundRef} src="../../assets/sounds/lose.wav" className="clip" preload="auto" />
+      <audio ref={winSoundRef} src="../../assets/sounds/win.wav" className="clip" preload="auto" />
       <GameView
         availableShips={availableShips}
         selectShip={selectShip}
