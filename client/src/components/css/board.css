@@ -3,8 +3,6 @@
 /* BOARD  */
 
 .board {
-  width: 320px;
-  height: 320px;
   border: 2px solid var(--oc-gray-4);
   margin: 1em 2em 2em 1em;
   display: flex;

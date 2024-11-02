@@ -110,9 +110,9 @@ export const ComputerBoard = ({
 
   return (
     <div className="p-2 m-2 bg-white/25 rounded-3xl">
-      <h2 className="font-museo text-2xl font-bold text-center text-white">Computer</h2>
+      <h2 className="font-museo text-2xl pt-2 font-bold text-center text-white">Computer</h2>
       <h1 className="font-museo text-xl font-medium text-center text-white">Score: 0</h1>
-      <div className="board">{compSquares}</div>
+      <div className="board h-[400px] w-[400px] xl:h-[570px] xl:w-[570px]">{compSquares}</div>
     </div>
   );
 };
