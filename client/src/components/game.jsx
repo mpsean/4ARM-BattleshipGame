@@ -129,17 +129,7 @@ const Game = () => {
   />
 </div>
 
-<div className="flex justify-center items-center pb-2 gap-3">
 
-  <img
-    src={clock}
-    width={50}
-  />
-  <div className="font-museo text-white font-black text-3xl drop-shadow-lg">
-    00:00
-  </div>
-
-</div>
 
 <div>
 
