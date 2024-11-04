@@ -3,6 +3,7 @@ import { GameView } from './GameView';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from "axios";
 const userId = sessionStorage.getItem("userId");
+import clock from '../../assets/images/clock.png';
 
 import {
   placeAllComputerShips,
@@ -129,13 +130,14 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
     sendDataToParent();
     generateComputerShips();
     setGameState('player-turn');
+    startTimer();
   };
 
   const changeTurn = () => {
     setGameState((oldGameState) =>
       oldGameState === 'player-turn' ? 'computer-turn' : 'player-turn'
     );
-
+    resetTimer();
   };
 
   // *** COMPUTER ***
@@ -327,6 +329,7 @@ useEffect(() => {
     setComputerShips([]); //enemy grid
     setHitsByPlayer([]);
     setHitsByComputer([]);
+    stopTimer();
   };
 
   const sunkSoundRef = useRef(null);
@@ -359,22 +362,66 @@ useEffect(() => {
       winSoundRef.current.play();
     }
   };
+
+  const [seconds, setSeconds] = useState(15);
+  const [isRunning, setIsRunning] = useState(null);
+
+  useEffect(() => {
+    let interval;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setSeconds((seconds) => seconds - 1)
+      }, 1000);
+    }
+
+    if (seconds === 0 && isRunning) {
+      changeTurn();
+      resetTimer;
+    }
+    return () => clearInterval(interval);
+  }, [seconds, isRunning]);
+
+  function resetTimer(){
+    setSeconds(15);
+  };
+
+  function startTimer(){
+    setIsRunning(true);
+  }
+
+  function stopTimer(){
+    setIsRunning(false);
+    setSeconds(15);
+  }
+
+
   return (
     <React.Fragment>
+      <div className="flex justify-center items-center pb-2 gap-3">
+
+    <img
+      src={clock}
+      width={50}
+    />
+    <div className="font-museo text-white font-black text-3xl drop-shadow-lg w-6 text-center">
+      {seconds}
+    </div>
+
+    </div>
       <audio
         ref={sunkSoundRef}
-        src="/sounds/ship_sunk.wav"
+        src="../../assets/sounds/ship_sunk.wav"
         className="clip"
         preload="auto"
       />
       <audio
         ref={clickSoundRef}
-        src="/sounds/click.wav"
+        src="../../assets/sounds/click.wav"
         className="clip"
         preload="auto"
       />
-      <audio ref={lossSoundRef} src="/sounds/lose.wav" className="clip" preload="auto" />
-      <audio ref={winSoundRef} src="/sounds/win.wav" className="clip" preload="auto" />
+      <audio ref={lossSoundRef} src="../../assets/sounds/lose.wav" className="clip" preload="auto" />
+      <audio ref={winSoundRef} src="../../assets/sounds/win.wav" className="clip" preload="auto" />
       <GameView
         availableShips={availableShips}
         selectShip={selectShip}
