@@ -125,21 +125,11 @@ const Game = () => {
 <div class="flex justify-center p-8">
   <img 
     src={logoImg}
-    width={300}
+    width={200}
   />
 </div>
 
-<div className="flex justify-center items-center pb-8 gap-3">
 
-  <img
-    src={clock}
-    width={50}
-  />
-  <div className="font-museo text-white font-black text-4xl drop-shadow-lg">
-    00:00
-  </div>
-
-</div>
 
 <div>
 
