@@ -8,7 +8,7 @@ import {
   updateSunkShips,
 } from './layoutHelpers';
 
-export const ComputerBoard = ({
+export const OpponentBoard = ({
   computerShips,
   gameState,
   hitsByPlayer,
@@ -18,6 +18,9 @@ export const ComputerBoard = ({
   setComputerShips,
   playSound,
 }) => {
+
+  const playerPos = sessionStorage.getItem("playerPos");
+
   // Ships on an empty layout
   let compLayout = computerShips.reduce(
     (prevLayout, currentShip) =>
@@ -69,8 +72,18 @@ export const ComputerBoard = ({
     }
   };
 
-  const playerTurn = gameState === 'player-turn';
-  const playerCanFire = playerTurn && !checkIfGameOver();
+  const playerTurn = () => {
+    if(playerPos=='player1'){
+      console.log('current gameState :',gameState)
+      return gameState === 'player1-turn';
+    }
+    if(playerPos=='player'){
+      console.log('current gameState :',gameState)
+      return gameState === 'player2-turn';
+    } 
+  }
+
+  const playerCanFire = playerTurn() && !checkIfGameOver();
 
   let alreadyHit = (index) =>
     compLayout[index] === 'hit' ||

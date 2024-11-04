@@ -12,7 +12,7 @@ import './css/main.css';
 
 
 const Game = () => {
-  //const [count, setCount] = useState(0);
+  const playerPos = sessionStorage.getItem("playerPos");
 
   const [error, setError] = useState(null);
 
@@ -23,6 +23,8 @@ const Game = () => {
   const userId = sessionStorage.getItem("userId");
 
   const socket = getSocket(); // Get the existing socket instance
+
+  const [turn, setTurn] = useState(null);
 
   //GAME LOGIC ------------------------------------------------------------------------------
   
@@ -37,25 +39,24 @@ const Game = () => {
     // console.log("updatePlacedShip sent to opponent")
     if(myPlaceShip){
       socket.emit('sendPlayerPlaceShip', myPlaceShip);
-      console.log("send data")
+      // console.log("send data")
     }
   }
 
   function exportHit() {
     if(exportHitsByPlayer){
-      socket.emit('sendHitsByPlayer', exportHitsByPlayer);
-      console.log("send hit")
+      socket.emit('timerStart', exportHitsByPlayer);
+      // console.log("send hit")
     }
   }
 
-  //check exportHitsByPlayer changed
-
   useEffect(() => {
-    console.log("exportHitsByPlayer update")
+    // console.log("exportHitsByPlayer update")
     exportHit()
 }, [exportHitsByPlayer]);
 
   useEffect(() => {
+
 
     // Listen for the 'countUpdated' event to update the count on all clients
     socket.on("countUpdated", (newCount) => {
@@ -64,12 +65,16 @@ const Game = () => {
 
     socket.on('receiveOppPlaceShip', (data) => {
       setOppPlaceShip(data)
-      console.log("get data")
+      // console.log("get data")
     });
 
     socket.on('receiveHit', (data) => {
       setImportHitReceived(data)
-      console.log("get hit")
+      // console.log("get hit")
+    });
+
+    socket.on('turnChanged', (data) => {
+      setTurn(data)
     });
 
     // Clean up socket listeners when the component unmounts
@@ -77,7 +82,7 @@ const Game = () => {
       socket.off("countUpdated");
       socket.off("receiveOppPlaceShip");
       socket.off("receiveHit");
-
+      socket.off("turnChanged");
 
     };
   }, );
@@ -119,6 +124,7 @@ const Game = () => {
   updatePlacedShip();
   exportHit()
 
+
   return (
 <div className="flex flex-col h-screen w-screen bg-sky-400 justify-center items-center">
 
@@ -134,6 +140,8 @@ const Game = () => {
 <div>
 
   <h2>Count: {count}</h2>
+  <h1>player : {playerPos}</h1>
+  <h1>playerID : {userId}</h1>
 
 
   {/* Button to increment the count */}
@@ -165,7 +173,10 @@ const Game = () => {
 oppPlaceShip={oppPlaceShip} 
 setMyPlaceShip={setMyPlaceShip} 
 setExportHitsByPlayer={setExportHitsByPlayer} 
-importHitReceived={importHitReceived}/>
+importHitReceived={importHitReceived}
+turn={turn}
+setTurn={setTurn}
+Socket={socket}/>
 
 </div>
 );

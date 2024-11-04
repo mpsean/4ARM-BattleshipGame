@@ -45,7 +45,9 @@ const AVAILABLE_SHIPS = [
   },
 ];
 
-export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived}) => { 
+export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived, turn, setTurn, Socket}) => { 
+  const socket = Socket; // Get the existing socket instance
+
   const [gameState, setGameState] = useState('placement');
   const [winner, setWinner] = useState(null);
 
@@ -129,16 +131,33 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
     console.log("start")
     sendDataToParent();
     generateComputerShips();
-    setGameState('player-turn');
     startTimer();
   };
 
-  const changeTurn = () => {
-    setGameState((oldGameState) =>
-      oldGameState === 'player-turn' ? 'computer-turn' : 'player-turn'
-    );
-    resetTimer();
-  };
+  //update GameState with Turn
+  useEffect(() => {
+    setGameState(turn); // start turn-> changeTurn at server
+    resetTimer()
+  }, [turn]);
+
+
+  // const changeTurn = () => {
+  //   if(gameState == 'player1-turn'){
+  //     setGameState('player2-turn')
+  //     console.log('com turn 55555555')
+  //     return
+  //   }
+  //   if(gameState == 'player2-turn'){
+  //     setGameState('player1-turn')
+  //     console.log('player turn 666666')
+  //     return
+  //   } 
+  //   // setGameState((oldGameState) =>
+  //   //   oldGameState === 'player1-turn' ? 'player2-turn' : 'player1-turn'
+  //   // );
+  //   console.log("changeturn = ",gameState)
+  //   resetTimer();
+  // };
 
   // *** COMPUTER ***
 
@@ -183,7 +202,8 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 
   // Change to computer turn, check if game over and stop if yes; if not fire into an eligible square
   const handleComputerTurn = () => {
-    changeTurn();
+    //changeTurn();
+    console.log("this is handleComputerTurn")
 
     if (checkIfGameOver()) {
       return;
@@ -243,12 +263,10 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 
 //when hit by player changed -> export hit
 useEffect(() => {
-  console.log("successfully export hit to parent")
   if (initExportHit.current) {
-    console.log("exportHitToParent")
     setTimeout(() => {
       exportHitToParent()
-      changeTurn();
+      //changeTurn();
       console.log("next turn is",gameState)
     }, 300);
   } else {
@@ -259,12 +277,10 @@ useEffect(() => {
 
   //when importHitReceived changed -> import opponent hit
   useEffect(() => {
-    console.log("successfully import hit from parent")
     if (initImportHit.current) {
-      console.log("importHit")
       setTimeout(() => {
         importHit();
-        changeTurn();
+        //changeTurn();
         console.log("next turn is",gameState)
       }, 300);
   } else {
@@ -363,35 +379,40 @@ useEffect(() => {
     }
   };
 
-  const [seconds, setSeconds] = useState(15);
+  //timer 
+
+  const [seconds, setSeconds] = useState(10); //use in page
   const [isRunning, setIsRunning] = useState(null);
 
-  useEffect(() => {
-    let interval;
-    if (isRunning) {
-      interval = setInterval(() => {
-        setSeconds((seconds) => seconds - 1)
-      }, 1000);
-    }
+  // useEffect(() => {
+  //   let interval;
+  //   if (isRunning) {
+  //     interval = setInterval(() => {
+  //       setSeconds((seconds) => seconds - 1)
+  //     }, 1000);
+  //   }
 
-    if (seconds === 0 && isRunning) {
-      changeTurn();
-      resetTimer;
-    }
-    return () => clearInterval(interval);
-  }, [seconds, isRunning]);
+  //   if (seconds === 0 && isRunning) {
+  //     //changeTurn();
+  //     resetTimer;
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [seconds, isRunning]);
 
   function resetTimer(){
-    setSeconds(15);
+    setSeconds(10);
   };
 
   function startTimer(){
     setIsRunning(true);
+    console.log('startTimer')
+    //ask server for init state
+    socket.emit('timerStart', gameState != 'game-over');
   }
 
   function stopTimer(){
     setIsRunning(false);
-    setSeconds(15);
+    setSeconds(10);
   }
 
 
@@ -406,6 +427,8 @@ useEffect(() => {
     <div className="font-museo text-white font-black text-3xl drop-shadow-lg w-6 text-center">
       {seconds}
     </div>
+
+    <h1>{gameState}</h1>
 
     </div>
       <audio
@@ -433,7 +456,6 @@ useEffect(() => {
         startTurn={startTurn}
         computerShips={computerShips}
         gameState={gameState}
-        changeTurn={changeTurn}
         hitsByPlayer={hitsByPlayer}
         setHitsByPlayer={setHitsByPlayer}
         hitsByComputer={hitsByComputer}
