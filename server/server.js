@@ -50,13 +50,32 @@ io.on('connection', (socket) => {
         console.log(`User ${socket.id} is already in room ${assignedRoom}`);
         return; // Prevent joining again
     }
+
+    // Check the number of players in the room
+    const playersInRoom = rooms[assignedRoom].length;
+
+    // Determine player role based on the number of players
+    let playerRole;
+    if (playersInRoom === 0) {
+      playerRole = 'player1';
+    } else if (playersInRoom === 1) {
+      playerRole = 'player2';
+    } else {
+      // Room is full (2 players)
+      socket.emit('roomFull');
+      return;
+    }
+
   
     // Check if the requested room has space
     if (rooms[assignedRoom] && rooms[assignedRoom].length < 2) {
       rooms[assignedRoom].push({ 
         id: socket.id, 
+        playerRole: playerRole,
         hasPlacedShip: false,
-        lastSentData: null, // Initialize lastSentData for data tracking
+        lastSentData: null, 
+        lastSentHit: null,
+        currentTurn: 'player1-turn'
       });
       socket.join(assignedRoom);
       console.log(`User ${socket.id} joined room ${assignedRoom}`);
@@ -69,6 +88,7 @@ io.on('connection', (socket) => {
     const firstPlayer = rooms[assignedRoom][0];
     if (firstPlayer && firstPlayer.id !== socket.id) {
       socket.emit('userJoined', firstPlayer.name); // Send the first player's name to the new user
+      // console.log(JSON.stringify(rooms[assignedRoom][0]))
     }
 
     // Notify the existing player about the new player
@@ -84,11 +104,20 @@ io.on('connection', (socket) => {
           console.log(`User ${socket.id} is already in room ${assignedRoom}`);
           return; // Prevent joining again
       }
-        rooms[assignedRoom].push({ id: socket.id, name: playerName });
+        rooms[assignedRoom].push(
+          { id: socket.id, 
+          name: playerName,
+          playerRole: playerRole,
+          hasPlacedShip: false,
+          lastSentData: null, 
+          lastSentHit: null,
+          currentTurn: 'player1-turn' }
+        );
         socket.join(assignedRoom);
         console.log(`User ${socket.id} joined existing room ${assignedRoom}`);
         socket.emit('roomJoined', assignedRoom);
         socket.to(assignedRoom).emit('userJoined', socket.id);
+
       } else {
         // Create a new room if none are available
         assignedRoom = `room_${Date.now()}`; // Create a unique room name
@@ -98,6 +127,8 @@ io.on('connection', (socket) => {
         socket.emit('roomJoined', assignedRoom);
       }
     }
+    socket.emit('playerAssigned', { role: playerRole });
+    console.log(JSON.stringify(rooms[assignedRoom]))
   });
 
   socket.on('updateCount', (newCount) => {
@@ -146,6 +177,39 @@ io.on('connection', (socket) => {
       }
     });
 
+    //** Timer */
+    socket.on('timerStart', (bool) => {
+      console.log('timerStart', bool)
+      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
+      
+      const room = rooms[roomId];
+      if (!room) {
+        console.log(`Room with ID ${roomId} does not exist.`);
+        return;
+      }
+      
+      while(bool){
+        io.to(roomId).emit("turnChanged", { currentTurn: rooms[roomId].currentTurn }); //send inital state
+      
+        setTimeout(() => {
+          changeTurn(roomId);
+        }, 10000); // 10-second delay
+      }
+    });
+
+      const changeTurn = (roomId) => {
+
+        const room = rooms[roomId];
+        if (!room) return;
+
+        // Toggle between player1 and player2
+        room.currentTurn = room.currentTurn === "'player1-turn'" ? "'player2-turn'" : "'player1-turn'";
+
+        // Notify players in the room about the turn change
+        io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
+      };
+
+
     //** control Hit */
     socket.on('sendHitsByPlayer', (data) => {
       console.log("sendHitsByPlayer");
@@ -159,19 +223,21 @@ io.on('connection', (socket) => {
       const player = rooms[roomId][playerIndex];
   
       // Check if the data has changed
-      if (JSON.stringify(player.lastSentData) === JSON.stringify(data)) {
+      if (JSON.stringify(player.lastSentHit) === JSON.stringify(data)) {
         console.log("Data has not changed, skipping emit. (control Hit)");
         return;
       }
   
       // Update lastSentData 
-      player.lastSentData = data;
+      player.lastSentHit = data;
+      player.dataChanged = true;
       // rooms[roomId][playerIndex].hasPlacedShip = true;
   
       const opponent = rooms[roomId].find(player => player.id !== socket.id);
-      if (opponent) {
+      if (opponent&&player.dataChanged) {
         console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
         socket.to(opponent.id).emit('receiveHit', data);
+        player.dataChanged = false;
       } else {
         console.log("Opponent not found in room. (control Hit)");
       }

@@ -40,8 +40,13 @@ export const ComputerBoard = ({
     compLayout
   );
 
+  const playerTurn = gameState === 'player1-turn';
+  const playerCanFire = playerTurn && !checkIfGameOver();
+
   // Check what's at the square and decide what next
   const fireTorpedo = (index) => {
+    console.log("gameState fire ",gameState)
+    console.log("playerCanFire",playerCanFire)
     if (compLayout[index] === 'ship') {
       const newHits = [
         ...hitsByPlayer,
@@ -66,8 +71,6 @@ export const ComputerBoard = ({
     }
   };
 
-  const playerTurn = gameState === 'player-turn';
-  const playerCanFire = playerTurn && !checkIfGameOver();
 
   let alreadyHit = (index) =>
     compLayout[index] === 'hit' ||

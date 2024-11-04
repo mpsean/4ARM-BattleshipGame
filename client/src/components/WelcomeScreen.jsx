@@ -33,28 +33,25 @@ const WelcomeScreen = ({ startPlay }) => {
           console.log(`Your opponent is: ${name}`);
         });
 
+        socket.on('playerAssigned', (data) => {
+          sessionStorage.setItem("playerPos", data.role);
+          console.log(`You are assigned as ${data.role}`);
+
+        });
+
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("roomJoined");
       socket.off("userJoined");
+      socket.off("playerAssigned");
+
+
     };
   }, [room,socket]);
 
-
-
-  //Wait for non
-
-  // const opponentId = sessionStorage.getItem("opponentId");
-
-  // useEffect(() => {
-  //   if (!userId || !opponentId) {
-  //     console.error("User or opponent ID is missing");
-  //     setError("User or opponent information is missing.");
-  //     return;
-  //   } },[userId, opponentId]);
-
   const startGame = () => {
     Navigate("/game")
+    console.log(sessionStorage.getItem("playerPos"))
   };
 
   return (

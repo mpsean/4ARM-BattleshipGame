@@ -2,7 +2,7 @@ import React from 'react';
 
 import { PlayerFleet } from './PlayerFleet';
 import { PlayerBoard } from './PlayerBoard';
-import { ComputerBoard } from './ComputerBoard';
+import { OpponentBoard } from './OpponentBoard';
 import { PlayerTips } from './PlayerTips';
 
 export const GameView = ({
@@ -57,7 +57,7 @@ export const GameView = ({
         hitsByComputer={hitsByComputer}
         playSound={playSound}
       />
-      <ComputerBoard
+      <OpponentBoard
         computerShips={computerShips}
         changeTurn={changeTurn}
         gameState={gameState}
