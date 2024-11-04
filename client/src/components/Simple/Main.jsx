@@ -428,7 +428,7 @@ useEffect(() => {
       {seconds}
     </div>
 
-    <h1>{gameState}</h1>
+    {/* <h1>{gameState}</h1> */}
 
     </div>
       <audio

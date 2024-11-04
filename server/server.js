@@ -179,7 +179,7 @@ io.on('connection', (socket) => {
 
     //** Timer */
     socket.on('timerStart', (bool) => {
-      console.log('timerStart', bool)
+      console.log('timerStart', bool);
       const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
       
       const room = rooms[roomId];
@@ -187,28 +187,33 @@ io.on('connection', (socket) => {
         console.log(`Room with ID ${roomId} does not exist.`);
         return;
       }
-      
-      while(bool){
-        io.to(roomId).emit("turnChanged", { currentTurn: rooms[roomId].currentTurn }); //send inital state
-      
-        setTimeout(() => {
+    
+      if (bool) {
+        // Emit the initial turn state to all players in the room
+        io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
+    
+        // Set an interval to switch turns every 10 seconds
+        room.turnInterval = setInterval(() => {
           changeTurn(roomId);
         }, 10000); // 10-second delay
+      } else {
+        // Clear the interval when timer is stopped
+        // Clear the interval if `bool` is false
+        clearInterval(room.turnInterval);
+        room.turnInterval = null; // Reset the interval reference
       }
     });
-
-      const changeTurn = (roomId) => {
-
-        const room = rooms[roomId];
-        if (!room) return;
-
-        // Toggle between player1 and player2
-        room.currentTurn = room.currentTurn === "'player1-turn'" ? "'player2-turn'" : "'player1-turn'";
-
-        // Notify players in the room about the turn change
-        io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
-      };
-
+    
+    const changeTurn = (roomId) => {
+      const room = rooms[roomId];
+      if (!room) return;
+    
+      // Toggle between 'player1-turn' and 'player2-turn'
+      room.currentTurn = room.currentTurn === 'player1-turn' ? 'player2-turn' : 'player1-turn';
+    
+      // Notify players in the room about the turn change
+      io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
+    };
 
     //** control Hit */
     socket.on('sendHitsByPlayer', (data) => {
@@ -243,27 +248,29 @@ io.on('connection', (socket) => {
       }
     });
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected:', socket.id,
-      'Total connected:', io.engine.clientsCount
-    );
-
-    // Remove user from all rooms they are in
-  for (const room of Object.keys(rooms)) {
-    const index = rooms[room].findIndex(player => player.id === socket.id);
-    if (index !== -1) {
-      const playerName = rooms[room][index].name; // Get the player's name
-      rooms[room].splice(index, 1); // Remove the user from the room
-      socket.to(room).emit('userDisconnected', socket.id, playerName); // Notify others
-      // If the room is empty, delete it
-      if (rooms[room].length === 0) {
-        delete rooms[room]; // Clean up empty rooms
+    socket.on('disconnect', () => {
+      console.log('Client disconnected:', socket.id, 'Total connected:', io.engine.clientsCount);
+    
+      // Remove user from all rooms they are in
+      for (const roomId of Object.keys(rooms)) {
+        const room = rooms[roomId];
+        const index = room.findIndex(player => player.id === socket.id);
+        if (index !== -1) {
+          const playerName = room[index].name;
+          room.splice(index, 1);
+    
+          // Notify others in the room
+          socket.to(roomId).emit('userDisconnected', socket.id, playerName);
+    
+          // If the room is empty, clear its interval and delete it
+          if (room.length === 0) {
+            clearInterval(room.turnInterval);
+            delete rooms[roomId];
+          }
+          break;
+        }
       }
-      console.log(`User ${socket.id} left room ${room}`);
-      break; // Exit after finding the user's room
-    }
-  }
-  });
+    });
 });
 
 app.use(cors({

@@ -45,7 +45,7 @@ const Game = () => {
 
   function exportHit() {
     if(exportHitsByPlayer){
-      socket.emit('timerStart', exportHitsByPlayer);
+      socket.emit('sendHitsByPlayer', exportHitsByPlayer);
       // console.log("send hit")
     }
   }
@@ -73,15 +73,22 @@ const Game = () => {
       // console.log("get hit")
     });
 
+    // Clean up socket listeners when the component unmounts
+    return () => {
+      socket.off("countUpdated");
+      socket.off("receiveOppPlaceShip");
+      socket.off("receiveHit");
+
+    };
+  }, );
+
+  useEffect(() => {
     socket.on('turnChanged', (data) => {
       setTurn(data)
     });
 
     // Clean up socket listeners when the component unmounts
     return () => {
-      socket.off("countUpdated");
-      socket.off("receiveOppPlaceShip");
-      socket.off("receiveHit");
       socket.off("turnChanged");
 
     };
