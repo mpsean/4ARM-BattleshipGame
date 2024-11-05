@@ -137,27 +137,38 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
   //update GameState with Turn
   useEffect(() => {
     setGameState(turn); // start turn-> changeTurn at server
-    resetTimer()
+    console.log("import turn ",turn)
   }, [turn]);
 
+// Start the turn timer and setup gameover emit
 
-  // const changeTurn = () => {
-  //   if(gameState == 'player1-turn'){
-  //     setGameState('player2-turn')
-  //     console.log('com turn 55555555')
-  //     return
-  //   }
-  //   if(gameState == 'player2-turn'){
-  //     setGameState('player1-turn')
-  //     console.log('player turn 666666')
-  //     return
-  //   } 
-  //   // setGameState((oldGameState) =>
-  //   //   oldGameState === 'player1-turn' ? 'player2-turn' : 'player1-turn'
-  //   // );
-  //   console.log("changeturn = ",gameState)
-  //   resetTimer();
-  // };
+function checkGameOverCondition(){
+  if(gameState == 'game-over'){
+    return true
+  }else{
+    return false
+  }
+}
+
+function startTimer() {
+  console.log("Starting game timer");
+  
+  // Emit 'timerStart' to initiate turn changes on the server
+  socket.emit("timerStart", false);
+
+  // Periodically send gameover status (example: every 10 seconds)
+  let gameoverInterval;
+  gameoverInterval = setInterval(() => {
+    const isGameOver = checkGameOverCondition(); // Define this to check game status
+    socket.emit("gameover", isGameOver);
+    console.log("Gameover status sent:", isGameOver);
+
+    // If game is over, stop sending updates
+    if (isGameOver) {
+      clearInterval(gameoverInterval);
+    }
+  }, 10000); // Sends every 10 seconds
+}
 
   // *** COMPUTER ***
 
@@ -345,7 +356,6 @@ useEffect(() => {
     setComputerShips([]); //enemy grid
     setHitsByPlayer([]);
     setHitsByComputer([]);
-    stopTimer();
   };
 
   const sunkSoundRef = useRef(null);
@@ -381,39 +391,8 @@ useEffect(() => {
 
   //timer 
 
-  const [seconds, setSeconds] = useState(10); //use in page
-  const [isRunning, setIsRunning] = useState(null);
+  const [seconds, setSeconds] = useState(69); //use in page
 
-  // useEffect(() => {
-  //   let interval;
-  //   if (isRunning) {
-  //     interval = setInterval(() => {
-  //       setSeconds((seconds) => seconds - 1)
-  //     }, 1000);
-  //   }
-
-  //   if (seconds === 0 && isRunning) {
-  //     //changeTurn();
-  //     resetTimer;
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [seconds, isRunning]);
-
-  function resetTimer(){
-    setSeconds(10);
-  };
-
-  function startTimer(){
-    setIsRunning(true);
-    console.log('startTimer')
-    //ask server for init state
-    socket.emit('timerStart', gameState != 'game-over');
-  }
-
-  function stopTimer(){
-    setIsRunning(false);
-    setSeconds(10);
-  }
 
 
   return (
