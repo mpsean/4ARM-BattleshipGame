@@ -131,13 +131,17 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
     console.log("start")
     sendDataToParent();
     generateComputerShips();
+    setGameState('player1-turn');
     startTimer();
   };
 
   //update GameState with Turn
   useEffect(() => {
-    setGameState(turn); // start turn-> changeTurn at server
-    console.log("import turn ",turn)
+    if(gameState!='placeship'&&turn){
+      setGameState(turn); // start turn-> changeTurn at server
+      console.log("import turn ",turn)
+    }
+    console.log('this gayass function still loop')
   }, [turn]);
 
 // Start the turn timer and setup gameover emit
@@ -161,10 +165,13 @@ function startTimer() {
   gameoverInterval = setInterval(() => {
     const isGameOver = checkGameOverCondition(); // Define this to check game status
     socket.emit("gameover", isGameOver);
-    console.log("Gameover status sent:", isGameOver);
-
+    console.log("Gameover status senttttt:", isGameOver);
     // If game is over, stop sending updates
     if (isGameOver) {
+      clearInterval(gameoverInterval);
+    }
+
+    if(!userId){
       clearInterval(gameoverInterval);
     }
   }, 10000); // Sends every 10 seconds

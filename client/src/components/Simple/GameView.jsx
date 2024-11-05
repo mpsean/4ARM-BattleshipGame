@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { PlayerFleet } from './PlayerFleet';
 import { PlayerBoard } from './PlayerBoard';
@@ -16,7 +16,6 @@ export const GameView = ({
   startTurn,
   computerShips,
   gameState,
-  changeTurn,
   hitComputer,
   hitsByPlayer,
   setHitsByPlayer,
@@ -28,6 +27,14 @@ export const GameView = ({
   setComputerShips,
   playSound,
 }) => {
+  const [gameStateGV, setGameStateGV] = useState(gameState);
+
+  console.log('Hello from GameView Motherfucker ',gameState)
+
+  useEffect(() => {
+    setGameStateGV(gameState)
+  },[gameState]);
+
   return (
     <section id="game-screen">
       {gameState !== 'placement' ? (
@@ -59,8 +66,7 @@ export const GameView = ({
       />
       <OpponentBoard
         computerShips={computerShips}
-        changeTurn={changeTurn}
-        gameState={gameState}
+        gameStateOG={gameStateGV}
         hitComputer={hitComputer}
         hitsByPlayer={hitsByPlayer}
         setHitsByPlayer={setHitsByPlayer}
