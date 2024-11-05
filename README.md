@@ -13,4 +13,4 @@ How to use :
 <br>
 Library
 <p>Server : npm i mongoose axios express cors bcrypt dotenv nodemon express-session connect-mongo </p>
-<p>Client : npm i tailwindcss vite react-router-dom axios </p>
+<p>Client : npm i tailwindcss vite react-router-dom axios  </p>
