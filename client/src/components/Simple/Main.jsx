@@ -141,7 +141,6 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
       setGameState(turn); // start turn-> changeTurn at server
       console.log("import turn ",turn)
     }
-    console.log('this gayass function still loop')
   }, [turn]);
 
 // Start the turn timer and setup gameover emit
@@ -156,7 +155,6 @@ function checkGameOverCondition(){
 
 function startTimer() {
   console.log("Starting game timer");
-  
   // Emit 'timerStart' to initiate turn changes on the server
   socket.emit("timerStart", false);
 
@@ -400,6 +398,27 @@ useEffect(() => {
 
   const [seconds, setSeconds] = useState(69); //use in page
 
+  const startClock = () => {
+    setSeconds(10);
+    console.log('CLOCKSTART')
+  }
+
+  useEffect(() => {
+    if(gameState=='player1-turn'|| gameState=='player2-turn'){
+      startClock()
+      let interval = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 0) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    
+      return () => clearInterval(interval); // Clean up the interval on unmount or re-run
+    }
+  }, [gameState]);
 
 
   return (
