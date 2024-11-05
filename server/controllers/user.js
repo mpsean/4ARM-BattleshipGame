@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import UserModel from '../model/user.js'; 
+import {UserModel, SimpleUserModel} from '../model/user.js'; 
 
 const router = express.Router();
 
@@ -40,5 +40,39 @@ export const loginUser = async (req, res) => {
     }
 }
 
+export const loginUserSimple = async (req, res) => {
+    const { nickname } = req.body;
+
+    try {
+        const user = await SimpleUserModel.findOne({ nickname });
+        if(user){
+          return res.status(200).json({ message: 'Username already exist' });
+        }
+        const newUser = new SimpleUserModel({ nickname });
+        const savedUser = await newUser.save();
+      // Respond with success
+      return res.status(200).json({ message: 'Login successful', savedUser });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+export const deleteUserSimple = async (req, res) => {
+    console.log(req.params);
+    try {
+        const { nickname } = req.params;
+        const user = await SimpleUserModel.findOneAndDelete({ nickname : nickname });
+        if (!nickname) {
+            return res.status(404).json({ message: 'Username not found' });
+          }
+          return res
+            .status(200)
+            .json({ message: 'User deleted successfully', user: nickname });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ message: 'Error deleting user' });
+        }
+    };
 
 export default router;
