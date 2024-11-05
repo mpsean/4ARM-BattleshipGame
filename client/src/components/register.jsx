@@ -77,7 +77,7 @@ const register = () => {
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p class="font-museo font-medium text-sky-900">Already have an account? <Link class="font-bold underline" to="/login">Login</Link></p>  
+      <p class="font-museo font-medium text-center text-sky-950">Already have an account? <Link class="font-bold underline" to="/login">Login</Link></p>  
     </div>
     </section>
   );
