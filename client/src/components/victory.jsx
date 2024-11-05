@@ -59,7 +59,7 @@ const Victory = () => {
 
   return (
     // <div style={{ textAlign: 'center', marginTop: '50px' }}>
-    <section class="flex h-screen w-screen bg-gray-500 justify-center items-center">
+    <section class="flex h-screen w-screen bg-gray-500 dark:bg-gray-700 justify-center items-center">
     <div class="flex flex-col justify-center h-700 w-300">
       <div class="flex justify-center items-center">
       <img 
@@ -95,7 +95,7 @@ const Victory = () => {
       </div>
 
       <div class="grid grid-cols-3 grid-rows-2 gap-40">
-        <button onClick={handleRematch} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 hover:bg-green-800">
+        <button onClick={handleRematch} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Rematch
         </button>
         <img
@@ -104,7 +104,7 @@ const Victory = () => {
           width={200}
           class="row-start-1 row-span-2"
         />
-        <button onClick={handleDisconnect} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 hover:bg-green-800">
+        <button onClick={handleDisconnect} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Disconnect
         </button>
       </div>
