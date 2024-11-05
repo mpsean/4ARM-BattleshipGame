@@ -4,9 +4,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { initSocket } from '../socket';
 
-function login({ setIsLoggedIn, isLoggedIn }) {
+function loginSimple({ setIsLoggedIn, isLoggedIn }) {
   const [nickname , setnickname] = useState("");
-  const [password, setPassword] = useState("");
 
   const [error, setError] = useState(null); // Error state to display any error messages
 
@@ -14,14 +13,14 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 
   const handleSubmit  = (e) => {
       e.preventDefault();
-      axios.post(`http://localhost:3001/user/login`, { nickname, password })
+      axios.post(`http://localhost:3001/user/loginSimple`, { nickname })
           .then(result => {
               if (result.data.message === "Login successful") {
                 console.log("Login successful")
 
-                const userData = result.data.user; // Adjust based on your actual response structure
+                const userData = result.data.savedUser; // Adjust based on your actual response structure
                 console.log(userData);
-                const userID = result.data.user.nickname;
+                const userID = result.data.savedUser.nickname;
                 console.log(userID);
                 
 
@@ -30,16 +29,12 @@ function login({ setIsLoggedIn, isLoggedIn }) {
                 sessionStorage.setItem("userId", userID);
                 
                 // Navigate to the home page with user data
-                navigate("/welcomescreenAdv", { state: { user: userData } });
+                navigate("/welcomescreen", { state: { user: userData } });
               } 
-              if (result.data.message === "Invalid credentials") {
-                console.log("Invalid credentials")
-                alert("Invalid credentials");
-              }
-              if (result.data.message === "User doesnt exist"){
+              if (result.data.message === "Username already exist"){
                 console.log("client error")
 
-                  alert("Login failed");
+                  alert("Login failed: Username already exist");
               }
           })
           .catch(err => setError(console.log(err)));
@@ -71,20 +66,9 @@ function login({ setIsLoggedIn, isLoggedIn }) {
           onChange={(e) => setnickname(e.target.value)} // Handle input change
         />
         <br /><br />
-        <input 
-          type="password" 
-          name="password" 
-          placeholder="Password" 
-          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50"
-          required 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} // Handle input change
-        />
         <br /><br />
         <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 hover:bg-green-800" type="submit">Join Game</button>
       </form>
-      
-      <p class="font-museo font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
 
 
       {/* Display error if there is one */} 
@@ -96,4 +80,4 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 };
 
 
-export default login;
+export default loginSimple;

@@ -47,14 +47,20 @@ const Victory = () => {
 
   // Function to handle decrementing the count
   const handleDisconnect = () => {
-    axios.put(`http://localhost:3001/result/${userId}/resetScore`)
-        .then(result => {
-            disconnectSocket();
-            sessionStorage.removeItem("userId");
-            sessionStorage.removeItem("opponentId");
-            Navigate("/login")
-        })
-        .catch(err => setError(console.log(err)));
+    axios
+      .put(`http://localhost:3001/result/${userId}/resetScore`)
+      .then((result) => {
+      })
+      .catch((err) => setError(console.log(err)));
+    axios
+      .put(`http://localhost:3001/user/${userId}/deleteUserSimple`)
+      .then((result) => {
+        disconnectSocket();
+        sessionStorage.removeItem("userId");
+        sessionStorage.removeItem("opponentId");
+        Navigate("/loginSimple");
+      })
+      .catch((err) => setError(console.log(err)));
   };
 
   return (
