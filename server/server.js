@@ -76,8 +76,8 @@ io.on("connection", (socket) => {
         currentTurn: "player1-turn",
       });
       socket.join(assignedRoom);
-      console.log(rooms[assignedRoom][1]);
-      console.log(`User ${socket.id} joined room ${assignedRoom}`);
+      console.log(rooms[assignedRoom]);
+      socket.emit("playerAssigned", { role: playerRole });
 
       // Notify the user that they've joined
       socket.emit("roomJoined", assignedRoom);
@@ -126,8 +126,8 @@ io.on("connection", (socket) => {
         socket.join(assignedRoom);
         console.log(`User ${socket.id} joined existing room ${assignedRoom}`);
         socket.emit("roomJoined", assignedRoom);
-        console.log(rooms[assignedRoom][0]);
         socket.to(assignedRoom).emit("userJoined", socket.id);
+        socket.emit("playerAssigned", { role: playerRole });
       } else {
         // Create a new room if none are available
         assignedRoom = `room_${Date.now()}`; // Create a unique room name
@@ -154,8 +154,8 @@ io.on("connection", (socket) => {
         console.log(
           `User ${socket.id} created and joined new room ${assignedRoom}`
         );
-        console.log(rooms[assignedRoom][0]);
         socket.emit("roomJoined", assignedRoom);
+        socket.emit("playerAssigned", { role: playerRole });
       }
     }
     //socket.emit("playerAssigned", { role: playerRole });
