@@ -122,6 +122,7 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 
   const importHit = () => {
     const data = importHitReceived;
+    console.log(`checkhitsbycomp for data`, data)
     setHitsByComputer(data)
   };
 
@@ -213,6 +214,7 @@ function startTimer() {
       playSound('sunk');
     }
     setPlacedShips(sunkShips);
+    console.log(`checkhitsbycomp for computerHits`)
     setHitsByComputer(computerHits);
   };
 

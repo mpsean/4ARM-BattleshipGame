@@ -310,6 +310,7 @@ io.on("connection", (socket) => {
       const opponent = rooms[roomId].find(player => player.id !== socket.id);
       if (opponent&&player.dataChanged) {
         console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
+        console.log(`checking received data: ${data}`);
         socket.to(opponent.id).emit('receiveHit', data);
         player.dataChanged = false;
       } else {

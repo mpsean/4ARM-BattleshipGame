@@ -32,7 +32,7 @@ const Game = () => {
   const [oppPlaceShip, setOppPlaceShip] = useState(null);
 
   const [exportHitsByPlayer, setExportHitsByPlayer] = useState(null);
-  const [importHitReceived, setImportHitReceived] = useState(null);
+  const [importHitReceived, setImportHitReceived] = useState([]);
 
   // Emit player data to server
   function updatePlacedShip() {
