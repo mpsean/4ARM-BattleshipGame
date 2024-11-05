@@ -177,43 +177,52 @@ io.on('connection', (socket) => {
       }
     });
 
-    //** Timer */
-    socket.on('timerStart', (bool) => {
-      console.log('timerStart', bool);
-      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
+    //** Timer----------------------------------------------------- */
+    // Initialize a timer only once when starting the game.
+    socket.on('timerStart', (gameover) => {
+      console.log('timerStart received:', gameover);
       
+      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
       const room = rooms[roomId];
+      
       if (!room) {
         console.log(`Room with ID ${roomId} does not exist.`);
         return;
       }
-    
-      if (bool) {
-        // Emit the initial turn state to all players in the room
-        io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
-    
-        // Set an interval to switch turns every 10 seconds
+
+      // Only start a new interval if one doesn't already exist for the room
+      if (!room.turnInterval) {
         room.turnInterval = setInterval(() => {
           changeTurn(roomId);
-        }, 10000); // 10-second delay
-      } else {
-        // Clear the interval when timer is stopped
-        // Clear the interval if `bool` is false
-        clearInterval(room.turnInterval);
-        room.turnInterval = null; // Reset the interval reference
+          console.log(`Turn changed for room ${roomId}`);
+        }, 10000); // 10-second delay for each turn change
       }
+
+      // Handle gameover message
+      socket.on('gameover', (isGameOver) => {
+        console.log('Game over status received:', isGameOver);
+
+        if (isGameOver) {
+          // Stop the interval if the game is truly over
+          clearInterval(room.turnInterval);
+          room.turnInterval = null; // Clear reference to stop future changes
+          io.to(roomId).emit('gameEnded', { message: 'Game over!' });
+        }
+      });
     });
-    
+
     const changeTurn = (roomId) => {
       const room = rooms[roomId];
       if (!room) return;
-    
+
       // Toggle between 'player1-turn' and 'player2-turn'
       room.currentTurn = room.currentTurn === 'player1-turn' ? 'player2-turn' : 'player1-turn';
-    
+
       // Notify players in the room about the turn change
       io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
     };
+
+    //------------------------------------------------------------------------------
 
     //** control Hit */
     socket.on('sendHitsByPlayer', (data) => {

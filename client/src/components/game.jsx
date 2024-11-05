@@ -24,7 +24,7 @@ const Game = () => {
 
   const socket = getSocket(); // Get the existing socket instance
 
-  const [turn, setTurn] = useState(null);
+  const [turn, setTurn] = useState('placement');
 
   //GAME LOGIC ------------------------------------------------------------------------------
   
