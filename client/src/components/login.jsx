@@ -84,7 +84,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
         <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" type="submit">Join Game</button>
       </form>
       
-      <p class="font-museo font-medium text-center text-white">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
+      <p class="font-museo font-medium text-center text-sky-950">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
 
 
       {/* Display error if there is one */} 

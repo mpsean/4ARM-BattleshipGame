@@ -59,7 +59,7 @@ const Defeat = () => {
 
   return (
     // <div style={{ textAlign: 'center', marginTop: '50px' }}>
-    <section class="flex h-screen w-screen bg-gray-500 dark:bg-gray-700 justify-center items-center">
+    <section class="flex min-h-screen w-screen bg-gray-500 dark:bg-gray-700 justify-center items-center">
     <div class="flex flex-col justify-center h-700 w-300">
       <div class="flex justify-center items-center">
       <img 
