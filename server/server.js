@@ -179,6 +179,9 @@ io.on('connection', (socket) => {
 
     //** Timer----------------------------------------------------- */
     // Initialize a timer only once when starting the game.
+    let second = 10;
+    let isRunning = false;
+
     socket.on('timerStart', (gameover) => {
       console.log('timerStart received:', gameover);
       
@@ -190,20 +193,27 @@ io.on('connection', (socket) => {
         return;
       }
 
+      isRunning = true;
       // Only start a new interval if one doesn't already exist for the room
-      if (!room.turnInterval) {
+      if (!room.turnInterval&&isRunning) {
         room.turnInterval = setInterval(() => {
+          second-=1;
+          //changeTurn(roomId);
+        }, 1000); // 10-second delay for each turn change
+ 
+        if(second==0&& isRunning){
           changeTurn(roomId);
           console.log(`Turn changed for room ${roomId}`);
-        }, 10000); // 10-second delay for each turn change
+          resetTimer();
+        }
+
       }
 
       // Handle gameover message
       socket.on('gameover', (isGameOver) => {
-        console.log('Game over status received:', isGameOver);
-
         if (isGameOver) {
           // Stop the interval if the game is truly over
+          isRunning=false;
           clearInterval(room.turnInterval);
           room.turnInterval = null; // Clear reference to stop future changes
           io.to(roomId).emit('gameEnded', { message: 'Game over!' });
@@ -211,15 +221,23 @@ io.on('connection', (socket) => {
       });
     });
 
+    const resetTimer = () => {
+      second = 10;
+    }
+
     const changeTurn = (roomId) => {
       const room = rooms[roomId];
       if (!room) return;
 
-      // Toggle between 'player1-turn' and 'player2-turn'
+      if(isRunning){
+        // Toggle between 'player1-turn' and 'player2-turn'
       room.currentTurn = room.currentTurn === 'player1-turn' ? 'player2-turn' : 'player1-turn';
-
+      }
+      
       // Notify players in the room about the turn change
+      console.log("emit to client yay!!!!!!!!!!!!!!!!!!!!!!!!!")
       io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
+      resetTimer();
     };
 
     //------------------------------------------------------------------------------
@@ -233,6 +251,9 @@ io.on('connection', (socket) => {
         console.log("Room ID is null; player is not in any room. (control Hit)");
         return;
       }
+      changeTurn(roomId);
+
+
       const playerIndex = rooms[roomId].findIndex(player => player.id === socket.id);
       const player = rooms[roomId][playerIndex];
   

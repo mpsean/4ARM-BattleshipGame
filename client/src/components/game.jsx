@@ -84,7 +84,8 @@ const Game = () => {
 
   useEffect(() => {
     socket.on('turnChanged', (data) => {
-      setTurn(data)
+      setTurn(data.currentTurn)
+      console.log('game.jsx get',data.currentTurn)
     });
 
     // Clean up socket listeners when the component unmounts
@@ -92,7 +93,7 @@ const Game = () => {
       socket.off("turnChanged");
 
     };
-  }, );
+  },[]);
 
   //console.log(userId);
   // Function to handle incrementing the count
