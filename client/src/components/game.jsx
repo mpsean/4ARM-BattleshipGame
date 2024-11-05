@@ -55,6 +55,11 @@ const Game = () => {
     exportHit()
 }, [exportHitsByPlayer]);
 
+useEffect(() => {
+  // console.log("exportHitsByPlayer update")
+  updatePlacedShip();
+}, [myPlaceShip]);
+
   useEffect(() => {
 
 
@@ -129,8 +134,8 @@ const Game = () => {
 
 
 
-  updatePlacedShip();
-  exportHit()
+  //updatePlacedShip();
+  //exportHit()
 
 
   return (
