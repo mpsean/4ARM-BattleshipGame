@@ -16,7 +16,7 @@ const App = () => {
                     className="pt-24"
                 />
                 <div className="flex gap-10 pt-20">
-                  <a href={"/login"}>
+                  <a href={"/loginSimple"}>
                   <button className="flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none border-white text-white rounded-full bg-sky-700 hover:bg-green-800">
                     Simple Mode
                   </button>

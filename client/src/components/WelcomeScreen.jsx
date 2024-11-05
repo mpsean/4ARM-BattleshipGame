@@ -16,6 +16,8 @@ const WelcomeScreen = ({ startPlay }) => {
 
   const [opponentName, setOpponentName] = useState(null);
 
+  const [opponentMessage, setOpponentMessage] = useState(null);
+
   const socket = getSocket(); // Get the existing socket instance
 
   useEffect(() => {
@@ -31,6 +33,7 @@ const WelcomeScreen = ({ startPlay }) => {
           setOpponentName(name); // Store opponent's name
           sessionStorage.setItem("opponentId", name);
           console.log(`Your opponent is: ${name}`);
+          setOpponentMessage(`Your opponent is ${name}`);
         });
 
         socket.on('playerAssigned', (data) => {
@@ -50,6 +53,10 @@ const WelcomeScreen = ({ startPlay }) => {
   }, [room,socket]);
 
   const startGame = () => {
+    if (!opponentName) {
+      alert("Waiting for opponent.");
+      return;
+    }
     Navigate("/game")
     console.log(sessionStorage.getItem("playerPos"))
   };
@@ -72,7 +79,7 @@ const WelcomeScreen = ({ startPlay }) => {
           to sink the other person’s whole fleet wins!
         </p>
         <div className="flex justify-center">
-          <h2 className="font-museo text-white font-bold text-xl">Your opponent is {opponentName}.</h2>
+          <h2 className="font-museo text-white font-bold text-xl">{opponentMessage}</h2>
         </div>
       </div>
       <button className="flex justify-center items-center gap-2 px-7 py-4 font-montserrat font-bold text-xl leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={startGame}>Play</button>
