@@ -65,7 +65,6 @@ const Defeat = () => {
       <img 
           src={defeatHeader}
           width= {650}
-          class=""
       />
       </div>
       <div class="flex justify-center items-center">
@@ -94,17 +93,15 @@ const Defeat = () => {
         </div>
       </div>
 
-      <div class="grid grid-cols-3 grid-rows-2 gap-28 lg:gap-40">
-        <button onClick={handleRematch} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
+      <div class="grid grid-cols-3 items-end gap-x-28 lg:gap-x-40">
+        <button onClick={handleRematch} className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Rematch
         </button>
         <img
           src={defeatAvatar}
-          height={100}
           width={200}
-          class="row-start-1 row-span-2"
         />
-        <button onClick={handleDisconnect} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
+        <button onClick={handleDisconnect} className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Disconnect
         </button>
       </div>
