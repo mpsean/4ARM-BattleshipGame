@@ -24,7 +24,7 @@ const Game = () => {
 
   const socket = getSocket(); // Get the existing socket instance
 
-  const [turn, setTurn] = useState(null);
+  const [turn, setTurn] = useState('placement');
 
   //GAME LOGIC ------------------------------------------------------------------------------
   
@@ -32,7 +32,7 @@ const Game = () => {
   const [oppPlaceShip, setOppPlaceShip] = useState(null);
 
   const [exportHitsByPlayer, setExportHitsByPlayer] = useState(null);
-  const [importHitReceived, setImportHitReceived] = useState(null);
+  const [importHitReceived, setImportHitReceived] = useState([]);
 
   // Emit player data to server
   function updatePlacedShip() {
@@ -54,6 +54,11 @@ const Game = () => {
     // console.log("exportHitsByPlayer update")
     exportHit()
 }, [exportHitsByPlayer]);
+
+useEffect(() => {
+  // console.log("exportHitsByPlayer update")
+  updatePlacedShip();
+}, [myPlaceShip]);
 
   useEffect(() => {
 
@@ -80,11 +85,12 @@ const Game = () => {
       socket.off("receiveHit");
 
     };
-  }, );
+  }, []);
 
   useEffect(() => {
     socket.on('turnChanged', (data) => {
-      setTurn(data)
+      setTurn(data.currentTurn)
+      console.log('game.jsx turnChanged get',data.currentTurn)
     });
 
     // Clean up socket listeners when the component unmounts
@@ -92,7 +98,7 @@ const Game = () => {
       socket.off("turnChanged");
 
     };
-  }, );
+  },[]);
 
   //console.log(userId);
   // Function to handle incrementing the count
@@ -128,8 +134,8 @@ const Game = () => {
 
 
 
-  updatePlacedShip();
-  exportHit()
+  //updatePlacedShip();
+  //exportHit()
 
 
   return (

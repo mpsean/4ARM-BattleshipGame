@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   stateToClass,
   generateEmptyLayout,
@@ -10,7 +10,7 @@ import {
 
 export const OpponentBoard = ({
   computerShips,
-  gameState,
+  gameStateOG,
   hitsByPlayer,
   setHitsByPlayer,
   handleComputerTurn,
@@ -19,7 +19,14 @@ export const OpponentBoard = ({
   playSound,
 }) => {
 
+  const [gameState, setGameState] = useState('placeship');
   const playerPos = sessionStorage.getItem("playerPos");
+
+  useEffect(() => {
+    if(gameStateOG !== undefined && gameStateOG !== null){
+      setGameState(gameStateOG); // start turn-> changeTurn at server
+    }
+  }, [gameStateOG]);
 
   // Ships on an empty layout
   let compLayout = computerShips.reduce(
@@ -45,7 +52,6 @@ export const OpponentBoard = ({
 
   // Check what's at the square and decide what next
   const fireTorpedo = (index) => {
-    console.log("we sent this hit to computer")
     //if hit
     if (compLayout[index] === 'ship') {
       const newHits = [
@@ -74,12 +80,16 @@ export const OpponentBoard = ({
 
   const playerTurn = () => {
     if(playerPos=='player1'){
-      console.log('current gameState :',gameState)
-      return gameState === 'player1-turn';
+      if(gameState === 'player1-turn'){
+        return true
+      }
+      return false;
     }
-    if(playerPos=='player'){
-      console.log('current gameState :',gameState)
-      return gameState === 'player2-turn';
+    if(playerPos=='player2'){
+      if(gameState === 'player2-turn'){
+        return true
+      }
+      return false;
     } 
   }
 
