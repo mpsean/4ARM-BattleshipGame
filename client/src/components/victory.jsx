@@ -66,21 +66,21 @@ const Victory = () => {
 
   return (
     // <div style={{ textAlign: 'center', marginTop: '50px' }}>
-    <section class="flex h-screen w-screen bg-gray-500 justify-center items-center">
-    <div class="flex flex-col justify-center h-700 w-300">
+    <section class="flex min-h-screen w-screen bg-gray-500 dark:bg-gray-700 justify-center items-center">
+    <div class="flex flex-col justify-center">
       <div class="flex justify-center items-center">
       <img 
           src={victoryHeader}
-          width= {800}
+          width= {650}
           class=""
       />
       </div>
       <div class="flex justify-center items-center">
-        <h2 class="font-montserrat text-2xl text-white font-bold pb-10">
+        <h2 class="font-museo text-2xl text-white font-bold p-5">
           Great work, {userId}. {/**put name var here */}
         </h2>
       </div>
-      <div class="flex flex-col justify-between items-center gap-2 pb-20">
+      <div class="flex flex-col justify-between items-center gap-2 pb-5">
         <div class="flex flex-1 items-center w-3/5">
           <p class="font-montserrat font-medium text-3xl text-white w-96">{userId}</p>
           <div class="flex gap-8 w-48 justify-center">
@@ -101,17 +101,17 @@ const Victory = () => {
         </div>
       </div>
 
-      <div class="grid grid-cols-3 grid-rows-2 gap-40">
-        <button onClick={handleRematch} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 hover:bg-green-800">
+      <div class="grid grid-cols-3 items-end gap-x-28 lg:gap-x-40">
+        <button onClick={handleRematch} className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Rematch
         </button>
-        <img
-          src={avatarWin}
-          height={100}
-          width={200}
-          class="row-start-1 row-span-2"
-        />
-        <button onClick={handleDisconnect} className="row-start-2 flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 hover:bg-green-800">
+        <div className="flex justify-center">
+          <img
+            src={avatarWin}
+            width={150}
+          />
+        </div>
+        <button onClick={handleDisconnect} className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Disconnect
         </button>
       </div>

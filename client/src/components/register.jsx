@@ -33,8 +33,8 @@ const register = () => {
 
 
   return (
-    <section class="relative bg-front bg-cover bg-gray-800 bg-blend-normal h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex items-center justify-center">
-    <div class="flex-grow-0 justify-center px-36 py-16 bg-white/70 rounded-3xl">
+    <section class="relative bg-front bg-cover dark:bg-black/20 dark:bg-blend-darken h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex items-center justify-center">
+    <div class="flex-grow-0 justify-center px-36 py-16 bg-white/70 dark:bg-white/30 rounded-3xl">
     <div class="flex justify-center">
         <img 
           src={logoImg}
@@ -49,13 +49,13 @@ const register = () => {
       <h1 class="font-bold font-museo text-center">Enter a nickname and password.</h1>
       
       {/* Form submission logic with React */}
-      <form class="font-montserrat justify-center text-center bg-white m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
+      <form class="font-montserrat justify-center text-center bg-white dark:bg-cyan-800 m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
         {/* Label omitted for simplicity */}
         <input 
           type="text" 
           name="nickname" 
           placeholder="Nickname" 
-          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50"
+          class="p-3 w-full max-w-80 border rounded-md dark:bg-slate-300 border-gray-400/50"
           required 
           value={nickname} 
           onChange={(e) => setnickname(e.target.value)} // Handle input change
@@ -65,19 +65,19 @@ const register = () => {
           type="password" 
           name="password" 
           placeholder="Password"
-          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50" 
+          class="p-3 w-full max-w-80 border rounded-md dark:bg-slate-300 border-gray-400/50" 
           required 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} // Handle input change
         />
         <br /><br />
-        <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 hover:bg-green-800" type="submit">Sign Up</button>
+        <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950  hover:bg-green-800" type="submit">Sign Up</button>
       </form>
       
 
       {/* Display error if there is one */} 
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p class="font-museo font-medium text-sky-900">Already have an account? <Link class="font-bold underline" to="/login">Login</Link></p>  
+      <p class="font-museo font-medium text-center text-sky-950">Already have an account? <Link class="font-bold underline" to="/login">Login</Link></p>  
     </div>
     </section>
   );

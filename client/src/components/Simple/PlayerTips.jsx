@@ -34,7 +34,7 @@ export const PlayerTips = ({
           <li>{accuracyScore > 0 ? `${accuracyScore}%` : `0%`} accuracy </li>
         </ul>
         <p className="font-museo text-lg text-white px-3 py-4">The first to sink all 5 opponent ships wins.</p>
-        <p className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={startAgain}>
+        <p className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={startAgain}>
           Restart
         </p>
       </div>
