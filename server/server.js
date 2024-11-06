@@ -195,7 +195,7 @@ io.on("connection", (socket) => {
 
     // Check if the data has changed
     if (JSON.stringify(player.lastSentData) === JSON.stringify(data)) {
-      console.log("Data has not changed, skipping emit.");
+      // console.log("Data has not changed, skipping emit.");
       return;
     }
 
@@ -231,15 +231,15 @@ io.on("connection", (socket) => {
       isRunning = true;
       // Only start a new interval if one doesn't already exist for the room
       if (!room.turnInterval&&isRunning) {
-        console.log("TIMER IS STILL WORKING (EVERY 10 SEC)")
+        //console.log("TIMER IS STILL WORKING (EVERY 10 SEC)")
         room.turnInterval = setInterval(() => {
           second -= 1; // Decrement the timer by 1 second
-          console.log("Seconds remaining:", second);
+          //console.log("Seconds remaining:", second);
       
           // Check if the timer has reached zero
           if (second === 0) {
             changeTurn(roomId);  // Change the turn when timer reaches zero
-            console.log(`TIMEUP Turn changed for room ${roomId}`);
+            //console.log(`TIMEUP Turn changed for room ${roomId}`);
             resetTimer(); // Reset the timer for the next turn
           }
         }, 1000); // Run the code every 1 second
@@ -248,7 +248,7 @@ io.on("connection", (socket) => {
       // Handle gameover message
       socket.on('gameover', (isGameOver) => {
         if (isGameOver) {
-          console.log("TIMER IS gameover")
+          //console.log("TIMER IS gameover")
 
           // Stop the interval if the game is truly over
           isRunning=false;
@@ -261,7 +261,6 @@ io.on("connection", (socket) => {
 
     const resetTimer = () => {
       second = 10;
-      console.log('RESETTIMER')
     }
 
     const changeTurn = (roomId) => {
@@ -274,7 +273,6 @@ io.on("connection", (socket) => {
       }
       
       // Notify players in the room about the turn change
-      console.log("TURNCHANGES BITCH")
       io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
       resetTimer();
     };
@@ -298,7 +296,7 @@ io.on("connection", (socket) => {
   
       // Check if the data has changed
       if (JSON.stringify(player.lastSentHit) === JSON.stringify(data)) {
-        console.log("Data has not changed, skipping emit. (control Hit)");
+        // console.log("Data has not changed, skipping emit. (control Hit)");
         return;
       }
   
@@ -309,8 +307,8 @@ io.on("connection", (socket) => {
   
       const opponent = rooms[roomId].find(player => player.id !== socket.id);
       if (opponent&&player.dataChanged) {
-        console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
-        console.log(`checking received data: ${data}`);
+        // console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
+        // console.log(`checking received data: ${data}`);
         socket.to(opponent.id).emit('receiveHit', data);
         player.dataChanged = false;
       } else {
