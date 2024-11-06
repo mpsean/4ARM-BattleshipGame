@@ -42,10 +42,6 @@ const WelcomeScreen = ({ startPlay }) => {
 
         });
 
-        if(sessionStorage.getItem("opponentId")){
-          setOpponentMessage(`Your opponent is ${sessionStorage.getItem("opponentId")}`);
-        }
-
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("roomJoined");
