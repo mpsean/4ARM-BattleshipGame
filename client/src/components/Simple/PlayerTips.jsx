@@ -19,7 +19,8 @@ export const PlayerTips = ({
           <li>{numberOfSuccessfulHits} successful hits</li>
           <li>{accuracyScore > 0 ? `${accuracyScore}%` : `0%`} accuracy </li>
         </ul>
-        <p className="font-museo text-lg text-white px-3 py-4">The first to sink all 5 opponent ships wins.</p>
+        <p className="font-museo text-lg text-white px-3 py-4">
+          Your score is {numberOfSuccessfulHits}</p>
 
       </div>
     </div>
