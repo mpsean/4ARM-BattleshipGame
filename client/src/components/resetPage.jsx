@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { disconnectSocket } from "../socket";
-import defeatAvatar from "../assets/images/avatar-lose.png";
-import defeatHeader from "../assets/images/defeat-header.png";
+import stalemateHeader from "../assets/images/stalemate-header.png";
 import { getSocket } from "../socket";
 
 const resetPage = () => {
@@ -46,7 +45,7 @@ const resetPage = () => {
     <div class="flex flex-col justify-center">
       <div class="flex justify-center items-center">
       <img 
-          src={defeatHeader}
+          src={stalemateHeader}
           width= {650}
       />
       </div>
