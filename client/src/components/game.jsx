@@ -139,7 +139,7 @@ useEffect(() => {
 
 
   return (
-<div className="flex flex-col h-screen w-screen bg-sky-400 justify-center items-center">
+<div className="flex flex-col min-h-screen min-w-screen bg-sky-400 dark:bg-sky-800 justify-center items-center">
 
 <div class="flex justify-center p-8">
   <img 
@@ -158,21 +158,21 @@ useEffect(() => {
 
 
   {/* Button to increment the count */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={handleIncrement} style={buttonStyle}>
+  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleIncrement} style={buttonStyle}>
     Increment
   </button>
 
   {/* Button to decrement the count */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={handleDecrement} style={buttonStyle}>
+  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleDecrement} style={buttonStyle}>
     Decrement
   </button>
 
   {/* Button to handle Win */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={handleWin} style={buttonStyle}>
+  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleWin} style={buttonStyle}>
     Win
   </button>
 
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 hover:bg-green-800" onClick={handleLose} style={buttonStyle}>
+  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleLose} style={buttonStyle}>
     Lose
   </button>
 </div>

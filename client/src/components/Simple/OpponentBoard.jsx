@@ -135,7 +135,7 @@ export const OpponentBoard = ({
     <div className="p-2 m-2 bg-white/25 rounded-3xl">
       <h2 className="font-museo text-2xl pt-2 font-bold text-center text-white">Computer</h2>
       <h1 className="font-museo text-xl font-medium text-center text-white">Score: 0</h1>
-      <div className="board h-[400px] w-[400px] xl:h-[570px] xl:w-[570px]">{compSquares}</div>
+      <div className="board h-[100px] w-[100px] xxsm:h-[200px] xxsm:w-[200px] xsm:h-[300px] xsm:w-[300px] lgxl:h-[400px] lgxl:w-[400px] xl:h-[480px] xl:w-[480px]">{compSquares}</div>
     </div>
   );
 };

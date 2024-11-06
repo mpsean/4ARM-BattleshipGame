@@ -45,8 +45,8 @@ function login({ setIsLoggedIn, isLoggedIn }) {
           .catch(err => setError(console.log(err)));
   };
   return (
-    <section class="relative bg-front bg-cover bg-gray-800 bg-blend-normal h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex flex-col items-center justify-center">
-    <div class="justify-center px-36 py-16 bg-white/70 rounded-3xl">
+    <section class="relative bg-front bg-cover dark:bg-black/20 dark:bg-blend-darken h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex flex-col items-center justify-center">
+    <div class="justify-center px-36 py-16 bg-white/70 dark:bg-white/30 rounded-3xl">
       <div class="flex justify-center">
         <img 
           src={logoImg}
@@ -59,13 +59,13 @@ function login({ setIsLoggedIn, isLoggedIn }) {
 
       
       {/* Form submission logic with React */}
-      <form class="font-montserrat justify-center text-center bg-white m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
+      <form class="font-montserrat justify-center text-center bg-white dark:bg-cyan-800 m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
         {/* Label omitted for simplicity */}
         <input 
           type="text" 
           name="nickname" 
           placeholder="Username" 
-          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50"
+          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50 dark:bg-slate-300"
           required 
           value={nickname} 
           onChange={(e) => setnickname(e.target.value)} // Handle input change
@@ -75,16 +75,16 @@ function login({ setIsLoggedIn, isLoggedIn }) {
           type="password" 
           name="password" 
           placeholder="Password" 
-          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50"
+          class="p-3 w-full max-w-80 border rounded-md border-gray-400/50 dark:bg-slate-300"
           required 
           value={password} 
           onChange={(e) => setPassword(e.target.value)} // Handle input change
         />
         <br /><br />
-        <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 hover:bg-green-800" type="submit">Join Game</button>
+        <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" type="submit">Join Game</button>
       </form>
       
-      <p class="font-museo font-medium text-sky-900">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
+      <p class="font-museo font-medium text-center text-sky-950">Don't have an account? <Link class="font-bold underline" to="/register">Sign Up</Link></p>      
 
 
       {/* Display error if there is one */} 
