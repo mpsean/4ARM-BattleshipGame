@@ -11,14 +11,17 @@ export const PlayerTips = ({
   let accuracyScore = Math.round(100 * (numberOfSuccessfulHits / numberOfHits));
   let succesfulComputerHits = hitsByComputer.filter((hit) => hit.type === 'hit').length;
 
-  let gameOverPanel = (
-    <div>
-      <div className="tip-box-title">Game Over!</div>
-      <p className="player-tip">
-      </p>
-      <p className="restart" onClick={startAgain}>
-        Play again?
-      </p>
+  let playPanel = (
+    <div className="flex flex-col min-w-56">
+      <div className="font-museo text-white text-2xl font-bold">Stats</div>
+      <div className="bg-cyan-700 m-3 p-3 rounded-3xl" id="firing-info">
+        <ul className="font-museo text-lg text-white px-3 py-4">
+          <li>{numberOfSuccessfulHits} successful hits</li>
+          <li>{accuracyScore > 0 ? `${accuracyScore}%` : `0%`} accuracy </li>
+        </ul>
+        <p className="font-museo text-lg text-white px-3 py-4">The first to sink all 5 opponent ships wins.</p>
+
+      </div>
     </div>
   );
 
@@ -40,8 +43,8 @@ export const PlayerTips = ({
 
   return (
     <div id="player-tips">
-      {numberOfSuccessfulHits === 17 || succesfulComputerHits === 17
-        ? gameOverPanel
+      {gameState != 'placement'
+        ? playPanel
         : tipsPanel}
     </div>
   );

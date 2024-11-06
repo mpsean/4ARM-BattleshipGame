@@ -416,7 +416,7 @@ useEffect(() => {
 
   //timer 
 
-  const [seconds, setSeconds] = useState(69); //use in page
+  const [seconds, setSeconds] = useState('Please wait'); //use in page
 
   const startClock = () => {
     setSeconds(10);
