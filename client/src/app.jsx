@@ -6,6 +6,8 @@ import Login from './components/login.jsx'
 import Victory from './components/victory.jsx'
 import Defeat from './components/defeat.jsx'
 import Game from './components/game.jsx'
+import WelcomeScreen from './components/WelcomeScreen.jsx';
+import LoginSimple from './components/loginSimple.jsx';
 
 //this app is define path
 
@@ -18,7 +20,9 @@ function App(){
       <Route path='/login' element={<Login />}></Route>
       <Route path='/victory' element={<Victory />}></Route>
       <Route path='/defeat' element={<Defeat />}></Route>
+      <Route path='/welcomescreen' element={<WelcomeScreen />}></Route>
       <Route path='/game' element={<Game />}></Route>
+      <Route path='/loginSimple' element={<LoginSimple />}></Route>
     </Routes>
     </BrowserRouter>
   )
