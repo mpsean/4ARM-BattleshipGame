@@ -90,7 +90,7 @@ useEffect(() => {
   useEffect(() => {
     socket.on('turnChanged', (data) => {
       setTurn(data.currentTurn)
-      console.log('game.jsx get',data.currentTurn)
+      console.log('game.jsx turnChanged get',data.currentTurn)
     });
 
     // Clean up socket listeners when the component unmounts

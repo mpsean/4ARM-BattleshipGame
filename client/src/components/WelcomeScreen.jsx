@@ -42,7 +42,6 @@ const WelcomeScreen = ({ startPlay }) => {
 
         });
 
-
     // Clean up socket listeners when the component unmounts
     return () => {
       socket.off("roomJoined");

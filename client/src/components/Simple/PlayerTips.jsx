@@ -5,7 +5,6 @@ export const PlayerTips = ({
   hitsbyPlayer,
   hitsByComputer,
   startAgain,
-  winner,
 }) => {
   let numberOfHits = hitsbyPlayer.length;
   let numberOfSuccessfulHits = hitsbyPlayer.filter((hit) => hit.type === 'hit').length;
@@ -16,7 +15,6 @@ export const PlayerTips = ({
     <div>
       <div className="tip-box-title">Game Over!</div>
       <p className="player-tip">
-        {winner === 'player' ? 'You win! 🎉' : 'You lose 😭. Better luck next time! '}
       </p>
       <p className="restart" onClick={startAgain}>
         Play again?
