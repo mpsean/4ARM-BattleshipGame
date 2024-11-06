@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { disconnectSocket } from "../socket";
-import defeatAvatar from "../assets/images/avatar-lose.png";
-import defeatHeader from "../assets/images/defeat-header.png";
+import stalemateHeader from "../assets/images/stalemate-header.png";
 import { getSocket } from "../socket";
 
 const resetPage = () => {
@@ -46,21 +45,20 @@ const resetPage = () => {
     <div class="flex flex-col justify-center">
       <div class="flex justify-center items-center">
       <img 
-          src={defeatHeader}
+          src={stalemateHeader}
           width= {650}
       />
       </div>
       <div class="flex justify-center items-center">
-        <h2 class="font-museo text-2xl text-white font-bold p-5">
+        <h2 class="font-museo text-2xl text-white font-bold p-10">
           The server has been reset.
         </h2>
       </div>
-
-      <div class="grid grid-cols-3 items-end gap-x-28 lg:gap-x-40">
-        <button onClick={handleDisconnect} className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
+      <div class="flex justify-center items-center">
+      <button onClick={handleDisconnect} className="max-w-60 items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
             Disconnect
-          </button>
-        </div>
+      </button>
+      </div>
       </div>
     </section>
   );
