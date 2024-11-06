@@ -44,7 +44,7 @@ const Defeat = () => {
   }, [userId, opponentId]);
   // Function to handle incrementing the count
   const handleRematch = () => {
-    Navigate("/game");
+    Navigate("/WelcomeScreen");
   };
 
   // Function to handle decrementing the count

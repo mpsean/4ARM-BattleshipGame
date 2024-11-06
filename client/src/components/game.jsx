@@ -85,7 +85,7 @@ useEffect(() => {
       socket.off("receiveHit");
 
     };
-  }, );
+  }, []);
 
   useEffect(() => {
     socket.on('turnChanged', (data) => {
