@@ -69,7 +69,7 @@ const Victory = () => {
       />
       </div>
       <div class="flex justify-center items-center">
-        <h2 class="font-montserrat text-2xl text-white font-bold pb-10">
+        <h2 class="font-museo text-2xl text-white font-bold pb-10">
           Great work, {userId}. {/**put name var here */}
         </h2>
       </div>
