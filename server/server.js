@@ -318,6 +318,41 @@ io.on("connection", (socket) => {
       }
     });
 
+  //** sendWinner */
+  socket.on("sendWinner", (data) => {
+    console.log("sendWinner");
+
+    const roomId = Object.keys(rooms).find((room) =>
+      rooms[room].some((player) => player.id === socket.id)
+    );
+    if (!roomId) {
+      console.log("Room ID is null; player is not in any room.");
+      return;
+    }
+    const playerIndex = rooms[roomId].findIndex(
+      (player) => player.id === socket.id
+    );
+    const player = rooms[roomId][playerIndex];
+
+    // // Check if the data has changed
+    // if (JSON.stringify(player.lastSentWinner) === JSON.stringify(data)) {
+    //   console.log("Data has not changed, skipping emit.");
+    //   return;
+    // }
+
+    // Update lastSentData and mark player as having placed their ship
+    player.lastSentWinner = data;
+    // rooms[roomId][playerIndex].hasPlacedShip = true;
+
+    const opponent = rooms[roomId].find((player) => player.id !== socket.id);
+    if (opponent) {
+      console.log(`Sending data to opponent (ID: ${opponent.id})`);
+      socket.to(opponent.id).emit("receiveWinner", data);
+    } else {
+      console.log("Opponent not found in room.");
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(
       "Client disconnected:",

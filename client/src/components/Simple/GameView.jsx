@@ -22,14 +22,11 @@ export const GameView = ({
   hitsByComputer,
   handleComputerTurn,
   checkIfGameOver,
-  winner,
   startAgain,
   setComputerShips,
   playSound,
 }) => {
   const [gameStateGV, setGameStateGV] = useState(gameState);
-
-  console.log('Hello from GameView Motherfucker ',gameState)
 
   useEffect(() => {
     setGameStateGV(gameState)
@@ -42,7 +39,6 @@ export const GameView = ({
           gameState={gameState}
           hitsbyPlayer={hitsByPlayer}
           hitsByComputer={hitsByComputer}
-          winner={winner}
           startAgain={startAgain}
         />
       ) : (

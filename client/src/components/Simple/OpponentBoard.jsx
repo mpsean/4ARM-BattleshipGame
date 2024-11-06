@@ -25,7 +25,6 @@ export const OpponentBoard = ({
   useEffect(() => {
     if(gameStateOG !== undefined && gameStateOG !== null){
       setGameState(gameStateOG); // start turn-> changeTurn at server
-      console.log('gameStateOG changes to',gameStateOG)
     }
   }, [gameStateOG]);
 
@@ -53,7 +52,6 @@ export const OpponentBoard = ({
 
   // Check what's at the square and decide what next
   const fireTorpedo = (index) => {
-    console.log("we sent this hit to computer")
     //if hit
     if (compLayout[index] === 'ship') {
       const newHits = [
@@ -82,14 +80,12 @@ export const OpponentBoard = ({
 
   const playerTurn = () => {
     if(playerPos=='player1'){
-      console.log('current gameState from OPPboard P1 :',gameState)
       if(gameState === 'player1-turn'){
         return true
       }
       return false;
     }
     if(playerPos=='player2'){
-      console.log('current gameState from OPPboard P2:',gameState)
       if(gameState === 'player2-turn'){
         return true
       }

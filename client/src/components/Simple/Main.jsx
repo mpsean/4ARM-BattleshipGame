@@ -46,6 +46,7 @@ const AVAILABLE_SHIPS = [
 ];
 
 export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived, turn, setTurn, Socket}) => { 
+  
   const socket = Socket; // Get the existing socket instance
 
   const [gameState, setGameState] = useState('placement');
@@ -147,10 +148,10 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 // Start the turn timer and setup gameover emit
 
 function checkGameOverCondition(){
-  if(gameState == 'game-over'){
+  if(gameState == 'placement'&&winner==null){
     return true
   }else{
-    console.log('checkgameover, gameState is',gameState)
+    console.log('checkgameover, gameState is',gameState,winner)
     return false
   }
 }
@@ -164,10 +165,10 @@ function startTimer() {
   let gameoverInterval;
   gameoverInterval = setInterval(() => {
     // const isGameOver = checkIfGameOver(); // Define this to check game status
-    socket.emit("gameover", checkGameOverCondition());
-    console.log("Gameover status senttttt:", checkGameOverCondition());
+    // socket.emit("gameover", checkGameOverCondition());
+    // console.log("Gameover status senttttt:", checkGameOverCondition());
     // If game is over, stop sending updates
-    if (checkIfGameOver()) {
+    if (checkGameOverCondition()) {
       clearInterval(gameoverInterval);
       console.log("Gameover is :", checkGameOverCondition());
     }
@@ -342,6 +343,8 @@ useEffect(() => {
             Navigate("/victory")
         })
         .catch(err => setError(console.log(err)));
+        socket.emit('sendWinner',winner)
+        socket.emit("gameover", true);
     } 
     if (gameState === 'game-over' && winner === 'computer') {
       Navigate('/defeat'); // Navigate to defeat screen
@@ -424,6 +427,21 @@ useEffect(() => {
     }
   }, [gameState]);
 
+  useEffect(() => {
+    socket.on('receiveWinner', (data) => {
+      if(data == 'player'){
+        setWinner('computer')
+        setGameState('game-over')
+      }
+      console.log('setWinner is ',winner)
+    });
+
+    // Clean up socket listeners when the component unmounts
+    return () => {
+      socket.off("receiveWinner");
+
+    };
+  },[]);
 
   return (
     <React.Fragment>
@@ -436,8 +454,6 @@ useEffect(() => {
     <div className="font-museo text-white font-black text-3xl drop-shadow-lg w-6 text-center">
       {seconds}
     </div>
-
-    {/* <h1>{gameState}</h1> */}
 
     </div>
       <audio
@@ -472,7 +488,6 @@ useEffect(() => {
         handleComputerTurn={handleComputerTurn}
         checkIfGameOver={checkIfGameOver}
         startAgain={startAgain}
-        winner={winner}
         setComputerShips={setComputerShips}
         playSound={playSound}
       />
