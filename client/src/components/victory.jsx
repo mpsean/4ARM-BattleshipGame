@@ -14,6 +14,7 @@ const Victory = () => {
   const opponentId = sessionStorage.getItem("opponentId");
 
   useEffect(() => {
+
     if (!userId || !opponentId) {
       console.error("User or opponent ID is missing");
       setError("User or opponent information is missing.");
@@ -42,7 +43,7 @@ const Victory = () => {
   }, [userId, opponentId]);
   // Function to handle incrementing the count
   const handleRematch = () => {
-    Navigate("/game")
+    Navigate("/WelcomeScreen");
   };
 
   // Function to handle decrementing the count
