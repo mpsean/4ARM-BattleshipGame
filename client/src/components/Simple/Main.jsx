@@ -150,6 +150,7 @@ function checkGameOverCondition(){
   if(gameState == 'game-over'){
     return true
   }else{
+    console.log('checkgameover, gameState is',gameState)
     return false
   }
 }
@@ -162,12 +163,13 @@ function startTimer() {
   // Periodically send gameover status (example: every 10 seconds)
   let gameoverInterval;
   gameoverInterval = setInterval(() => {
-    const isGameOver = checkGameOverCondition(); // Define this to check game status
-    socket.emit("gameover", isGameOver);
-    console.log("Gameover status senttttt:", isGameOver);
+    // const isGameOver = checkIfGameOver(); // Define this to check game status
+    socket.emit("gameover", checkGameOverCondition());
+    console.log("Gameover status senttttt:", checkGameOverCondition());
     // If game is over, stop sending updates
-    if (isGameOver) {
+    if (checkIfGameOver()) {
       clearInterval(gameoverInterval);
+      console.log("Gameover is :", checkGameOverCondition());
     }
 
     if(!userId){
@@ -355,7 +357,7 @@ useEffect(() => {
 
 
   const startAgain = () => {
-    setGameState('placement');
+    //setGameState('placement');
     setWinner(null);
     setCurrentlyPlacing(null);
     setPlacedShips([]); //our grid
