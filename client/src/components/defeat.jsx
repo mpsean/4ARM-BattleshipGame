@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { disconnectSocket } from "../socket";
 import defeatAvatar from "../assets/images/avatar-lose.png";
 import defeatHeader from "../assets/images/defeat-header.png";
+import { getSocket } from "../socket";
 
 const Defeat = () => {
   const [userScore, setUserScore] = useState(0);
@@ -12,6 +13,8 @@ const Defeat = () => {
   const Navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
   const opponentId = sessionStorage.getItem("opponentId");
+  const [opponentStatus, setOpponentStatus] = useState("online");
+  const socket = getSocket(); // Get the existing socket instance
 
   useEffect(() => {
     if (!userId || !opponentId) {
@@ -41,6 +44,16 @@ const Defeat = () => {
         console.error("Error fetching opponent score:", err);
         setError("Failed to load opponent score.");
       });
+
+      socket.on(`userDisconnected`, (data) => {
+        setOpponentStatus("offline");
+      }
+      );
+
+      return() => {
+        socket.off(`userDisconnected`);
+      }
+
   }, [userId, opponentId]);
   // Function to handle incrementing the count
   const handleRematch = () => {
@@ -65,6 +78,8 @@ const Defeat = () => {
       .catch((err) => setError(console.log(err)));
   };
 
+
+  const statusClass = opponentStatus === "online" ? "bg-green-700" : "bg-red-700";
   return (
     // <div style={{ textAlign: 'center', marginTop: '50px' }}>
     <section class="flex min-h-screen min-w-screen bg-gray-500 dark:bg-gray-700 justify-center items-center">
@@ -85,8 +100,7 @@ const Defeat = () => {
           <p class="font-museo font-medium text-3xl text-white w-96">{opponentId}</p>
           <div class="flex gap-8 w-48 justify-center">
             <p class="font-museo font-medium text-3xl w-12 text-white text-center">{opponentScore}</p>
-            <div class="bg-green-700 w-24">
-              <p class="m-2 font-museo text-center">STATUS</p>
+            <div className={`${statusClass} w-24`}>
             </div>
           </div>
         </div>
@@ -98,8 +112,7 @@ const Defeat = () => {
               <p class="font-museo font-medium text-3xl w-12 text-white text-center">
                 {userScore}
               </p>
-              <div class="bg-cyan-500 w-24">
-                <p class="m-2 font-museo text-center">STATUS</p>
+              <div class="bg-green-700 w-24">
               </div>
             </div>
           </div>
