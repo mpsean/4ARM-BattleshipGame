@@ -46,6 +46,7 @@ const AVAILABLE_SHIPS = [
 ];
 
 export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived, turn, setTurn, Socket}) => { 
+  
   const socket = Socket; // Get the existing socket instance
 
   const [gameState, setGameState] = useState('placement');
@@ -122,42 +123,73 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 
   const importHit = () => {
     const data = importHitReceived;
+    console.log(`checkhitsbycomp for data`, data)
     setHitsByComputer(data)
   };
 
 
   //when click button
   const startTurn = () => {
-    console.log("start")
-    sendDataToParent();
-    generateComputerShips();
-    startTimer();
+    console.log("[main.jsx] start")
+    handleStartTurn();
   };
+
+  const handleStartTurn = () => {
+    console.log("handleStartTurn [main.jsx]")
+    socket.emit("checkReady", true);
+    socket.on("bothReady", (readyStatus) => {
+      if (readyStatus) {
+          console.log("Both players are ready!");
+          sendDataToParent();
+          generateComputerShips();
+          setGameState('player1-turn');
+          startTimer();
+      }
+  });
+    
+  }
 
   //update GameState with Turn
   useEffect(() => {
-    setGameState(turn); // start turn-> changeTurn at server
-    resetTimer()
+    if(gameState!='placeship'&&turn){
+      setGameState(turn); // start turn-> changeTurn at server
+      console.log("import turn ",turn)
+    }
   }, [turn]);
 
+// Start the turn timer and setup gameover emit
 
-  // const changeTurn = () => {
-  //   if(gameState == 'player1-turn'){
-  //     setGameState('player2-turn')
-  //     console.log('com turn 55555555')
-  //     return
-  //   }
-  //   if(gameState == 'player2-turn'){
-  //     setGameState('player1-turn')
-  //     console.log('player turn 666666')
-  //     return
-  //   } 
-  //   // setGameState((oldGameState) =>
-  //   //   oldGameState === 'player1-turn' ? 'player2-turn' : 'player1-turn'
-  //   // );
-  //   console.log("changeturn = ",gameState)
-  //   resetTimer();
-  // };
+function checkGameOverCondition(){
+  if(gameState == 'placement'&&winner==null){
+    return true
+  }else{
+    console.log('checkgameover, gameState is',gameState,winner)
+    return false
+  }
+}
+
+function startTimer() {
+  console.log("Starting game timer");
+  // Emit 'timerStart' to initiate turn changes on the server
+  socket.emit("timerStart", false);
+
+  // Periodically send gameover status (example: every 10 seconds)
+  let gameoverInterval;
+  gameoverInterval = setInterval(() => {
+    // const isGameOver = checkIfGameOver(); // Define this to check game status
+    // socket.emit("gameover", checkGameOverCondition());
+    // console.log("Gameover status senttttt:", checkGameOverCondition());
+    // If game is over, stop sending updates
+    if (checkGameOverCondition()) {
+      clearInterval(gameoverInterval);
+      console.log("Gameover is :", checkGameOverCondition());
+    }
+
+    if(!userId){
+      clearInterval(gameoverInterval);
+    }
+  }, 10000); // Sends every 10 seconds
+}
 
   // *** COMPUTER ***
 
@@ -197,6 +229,7 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
       playSound('sunk');
     }
     setPlacedShips(sunkShips);
+    console.log(`checkhitsbycomp for computerHits`)
     setHitsByComputer(computerHits);
   };
 
@@ -322,6 +355,8 @@ useEffect(() => {
             Navigate("/victory")
         })
         .catch(err => setError(console.log(err)));
+        socket.emit('sendWinner',winner)
+        socket.emit("gameover", true);
     } 
     if (gameState === 'game-over' && winner === 'computer') {
       Navigate('/defeat'); // Navigate to defeat screen
@@ -338,6 +373,7 @@ useEffect(() => {
 
   const startAgain = () => {
     setGameState('placement');
+    socket.emit("gameover", true);
     setWinner(null);
     setCurrentlyPlacing(null);
     setPlacedShips([]); //our grid
@@ -345,7 +381,6 @@ useEffect(() => {
     setComputerShips([]); //enemy grid
     setHitsByPlayer([]);
     setHitsByComputer([]);
-    stopTimer();
   };
 
   const sunkSoundRef = useRef(null);
@@ -381,40 +416,45 @@ useEffect(() => {
 
   //timer 
 
-  const [seconds, setSeconds] = useState(10); //use in page
-  const [isRunning, setIsRunning] = useState(null);
+  const [seconds, setSeconds] = useState('Please wait'); //use in page
 
-  // useEffect(() => {
-  //   let interval;
-  //   if (isRunning) {
-  //     interval = setInterval(() => {
-  //       setSeconds((seconds) => seconds - 1)
-  //     }, 1000);
-  //   }
-
-  //   if (seconds === 0 && isRunning) {
-  //     //changeTurn();
-  //     resetTimer;
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [seconds, isRunning]);
-
-  function resetTimer(){
+  const startClock = () => {
     setSeconds(10);
-  };
-
-  function startTimer(){
-    setIsRunning(true);
-    console.log('startTimer')
-    //ask server for init state
-    socket.emit('timerStart', gameState != 'game-over');
+    console.log('CLOCKSTART')
   }
 
-  function stopTimer(){
-    setIsRunning(false);
-    setSeconds(10);
-  }
+  useEffect(() => {
+    if(gameState=='player1-turn'|| gameState=='player2-turn'){
+      startClock()
+      let interval = setInterval(() => {
+        setSeconds((prevSeconds) => {
+          if (prevSeconds === 0) {
+            clearInterval(interval);
+            return 0;
+          }
+          return prevSeconds - 1;
+        });
+      }, 1000);
+    
+      return () => clearInterval(interval); // Clean up the interval on unmount or re-run
+    }
+  }, [gameState]);
 
+  useEffect(() => {
+    socket.on('receiveWinner', (data) => {
+      if(data == 'player'){
+        setWinner('computer')
+        setGameState('game-over')
+      }
+      console.log('setWinner is ',winner)
+    });
+
+    // Clean up socket listeners when the component unmounts
+    return () => {
+      socket.off("receiveWinner");
+
+    };
+  },[]);
 
   return (
     <React.Fragment>
@@ -427,8 +467,6 @@ useEffect(() => {
     <div className="font-museo text-white font-black text-3xl drop-shadow-lg w-6 text-center">
       {seconds}
     </div>
-
-    {/* <h1>{gameState}</h1> */}
 
     </div>
       <audio
@@ -463,7 +501,6 @@ useEffect(() => {
         handleComputerTurn={handleComputerTurn}
         checkIfGameOver={checkIfGameOver}
         startAgain={startAgain}
-        winner={winner}
         setComputerShips={setComputerShips}
         playSound={playSound}
       />
