@@ -335,14 +335,9 @@ io.on("connection", (socket) => {
     const player = rooms[roomId][playerIndex];
 
     // // Check if the data has changed
-    // if (JSON.stringify(player.lastSentWinner) === JSON.stringify(data)) {
-    //   console.log("Data has not changed, skipping emit.");
-    //   return;
-    // }
 
     // Update lastSentData and mark player as having placed their ship
     player.lastSentWinner = data;
-    // rooms[roomId][playerIndex].hasPlacedShip = true;
 
     const opponent = rooms[roomId].find((player) => player.id !== socket.id);
     if (opponent) {
@@ -352,6 +347,39 @@ io.on("connection", (socket) => {
       console.log("Opponent not found in room.");
     }
   });
+
+  //** checkReady */
+  socket.on("checkReady", (data) => {
+    console.log("checkReady received:", data);
+
+    const roomId = Object.keys(rooms).find((room) =>
+      rooms[room].some((player) => player.id === socket.id)
+    );
+
+    if (!roomId) {
+      console.log("Room ID is null; player is not in any room.");
+      return;
+    }
+
+    const playerIndex = rooms[roomId].findIndex(
+      (player) => player.id === socket.id
+    );
+    const player = rooms[roomId][playerIndex];
+
+    // Update player's ready status
+    player.ready = data === true;
+
+    // Check if both players in the room are ready
+    const allPlayersReady = rooms[roomId].every((player) => player.ready);
+
+    if (allPlayersReady) {
+        console.log(`Both players in room ${roomId} are ready.`);
+        // Emit 'bothReady' to all players in the room
+        io.to(roomId).emit("bothReady", true);
+    } else {
+        console.log(`Waiting for both players to be ready in room ${roomId}.`);
+    }
+});
 
   socket.on("disconnect", () => {
     console.log(
