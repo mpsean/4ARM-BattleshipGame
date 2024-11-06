@@ -24,7 +24,9 @@ const io = new Server(server, {
   },
 });
 
-let count = 0;
+app.use(express.static("public"));
+
+let clientCount = 0;
 let assignedRoom = "test";
 const rooms = {}; //for creating socket rooms
 
@@ -37,10 +39,11 @@ io.on("connection", (socket) => {
     "total connected:",
     io.engine.clientsCount
   );
-  io.emit("total connected:", io.engine.clientsCount);
+
+  clientCount++;
+  io.emit("clientCount", clientCount);
 
   socket.on("joinRoom", ({ room, playerName }) => {
-
     if (!rooms[assignedRoom]) {
       // Create the room if it doesn't exist
       rooms[assignedRoom] = [];
@@ -212,111 +215,117 @@ io.on("connection", (socket) => {
     }
   });
 
-    //** Timer----------------------------------------------------- */
-    // Initialize a timer only once when starting the game.
-    let second = 10;
-    let isRunning = false;
+  //** Timer----------------------------------------------------- */
+  // Initialize a timer only once when starting the game.
+  let second = 10;
+  let isRunning = false;
 
-    socket.on('timerStart', (gameover) => {
-      //console.log('timerStart received:', gameover);
-      
-      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
-      const room = rooms[roomId];
-      
-      if (!room) {
-        //console.log(`Room with ID ${roomId} does not exist.`);
-        return;
-      }
+  socket.on("timerStart", (gameover) => {
+    //console.log('timerStart received:', gameover);
 
-      isRunning = true;
-      // Only start a new interval if one doesn't already exist for the room
-      if (!room.turnInterval&&isRunning) {
-        console.log("TIMER IS STILL WORKING (EVERY 10 SEC)")
-        room.turnInterval = setInterval(() => {
-          second -= 1; // Decrement the timer by 1 second
-          console.log("Seconds remaining:", second);
-      
-          // Check if the timer has reached zero
-          if (second === 0) {
-            changeTurn(roomId);  // Change the turn when timer reaches zero
-            console.log(`TIMEUP Turn changed for room ${roomId}`);
-            resetTimer(); // Reset the timer for the next turn
-          }
-        }, 1000); // Run the code every 1 second
-      }
+    const roomId = Object.keys(rooms).find((room) =>
+      rooms[room].some((player) => player.id === socket.id)
+    );
+    const room = rooms[roomId];
 
-      // Handle gameover message
-      socket.on('gameover', (isGameOver) => {
-        if (isGameOver) {
-          console.log("TIMER IS gameover")
-
-          // Stop the interval if the game is truly over
-          isRunning=false;
-          clearInterval(room.turnInterval);
-          room.turnInterval = null; // Clear reference to stop future changes
-          io.to(roomId).emit('gameEnded', { message: 'Game over!' });
-        }
-      });
-    });
-
-    const resetTimer = () => {
-      second = 10;
-      console.log('RESETTIMER')
+    if (!room) {
+      //console.log(`Room with ID ${roomId} does not exist.`);
+      return;
     }
 
-    const changeTurn = (roomId) => {
-      const room = rooms[roomId];
-      if (!room) return;
+    isRunning = true;
+    // Only start a new interval if one doesn't already exist for the room
+    if (!room.turnInterval && isRunning) {
+      console.log("TIMER IS STILL WORKING (EVERY 10 SEC)");
+      room.turnInterval = setInterval(() => {
+        second -= 1; // Decrement the timer by 1 second
+        console.log("Seconds remaining:", second);
 
-      if(isRunning){
-        // Toggle between 'player1-turn' and 'player2-turn'
-      room.currentTurn = room.currentTurn === 'player1-turn' ? 'player2-turn' : 'player1-turn';
-      }
-      
-      // Notify players in the room about the turn change
-      console.log("TURNCHANGES BITCH")
-      io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
-      resetTimer();
-    };
+        // Check if the timer has reached zero
+        if (second === 0) {
+          changeTurn(roomId); // Change the turn when timer reaches zero
+          console.log(`TIMEUP Turn changed for room ${roomId}`);
+          resetTimer(); // Reset the timer for the next turn
+        }
+      }, 1000); // Run the code every 1 second
+    }
 
-    //------------------------------------------------------------------------------
+    // Handle gameover message
+    socket.on("gameover", (isGameOver) => {
+      if (isGameOver) {
+        console.log("TIMER IS gameover");
 
-    //** control Hit */
-    socket.on('sendHitsByPlayer', (data) => {
-      console.log("sendHitsByPlayer");
-  
-      const roomId = Object.keys(rooms).find(room => rooms[room].some(player => player.id === socket.id));
-      if (!roomId) {
-        console.log("Room ID is null; player is not in any room. (control Hit)");
-        return;
-      }
-      changeTurn(roomId);
-
-
-      const playerIndex = rooms[roomId].findIndex(player => player.id === socket.id);
-      const player = rooms[roomId][playerIndex];
-  
-      // Check if the data has changed
-      if (JSON.stringify(player.lastSentHit) === JSON.stringify(data)) {
-        console.log("Data has not changed, skipping emit. (control Hit)");
-        return;
-      }
-  
-      // Update lastSentData 
-      player.lastSentHit = data;
-      player.dataChanged = true;
-      // rooms[roomId][playerIndex].hasPlacedShip = true;
-  
-      const opponent = rooms[roomId].find(player => player.id !== socket.id);
-      if (opponent&&player.dataChanged) {
-        console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
-        console.log(`checking received data: ${data}`);
-        socket.to(opponent.id).emit('receiveHit', data);
-        player.dataChanged = false;
-      } else {
-        console.log("Opponent not found in room. (control Hit)");
+        // Stop the interval if the game is truly over
+        isRunning = false;
+        clearInterval(room.turnInterval);
+        room.turnInterval = null; // Clear reference to stop future changes
+        io.to(roomId).emit("gameEnded", { message: "Game over!" });
       }
     });
+  })
+
+  const resetTimer = () => {
+    second = 10;
+    console.log("RESETTIMER");
+  };
+
+  const changeTurn = (roomId) => {
+    const room = rooms[roomId];
+    if (!room) return;
+
+    if (isRunning) {
+      // Toggle between 'player1-turn' and 'player2-turn'
+      room.currentTurn =
+        room.currentTurn === "player1-turn" ? "player2-turn" : "player1-turn";
+    }
+
+    // Notify players in the room about the turn change
+    console.log("TURNCHANGES BITCH");
+    io.to(roomId).emit("turnChanged", { currentTurn: room.currentTurn });
+    resetTimer();
+  };
+
+  //------------------------------------------------------------------------------
+
+  //** control Hit */
+  socket.on("sendHitsByPlayer", (data) => {
+    console.log("sendHitsByPlayer");
+
+    const roomId = Object.keys(rooms).find((room) =>
+      rooms[room].some((player) => player.id === socket.id)
+    );
+    if (!roomId) {
+      console.log("Room ID is null; player is not in any room. (control Hit)");
+      return;
+    }
+    changeTurn(roomId);
+
+    const playerIndex = rooms[roomId].findIndex(
+      (player) => player.id === socket.id
+    );
+    const player = rooms[roomId][playerIndex];
+
+    // Check if the data has changed
+    if (JSON.stringify(player.lastSentHit) === JSON.stringify(data)) {
+      console.log("Data has not changed, skipping emit. (control Hit)");
+      return;
+    }
+
+    // Update lastSentData
+    player.lastSentHit = data;
+    player.dataChanged = true;
+    // rooms[roomId][playerIndex].hasPlacedShip = true;
+
+    const opponent = rooms[roomId].find((player) => player.id !== socket.id);
+    if (opponent && player.dataChanged) {
+      console.log(`Sending HIT data to opponent (ID: ${opponent.id})`);
+      console.log(`checking received data: ${data}`);
+      socket.to(opponent.id).emit("receiveHit", data);
+      player.dataChanged = false;
+    } else {
+      console.log("Opponent not found in room. (control Hit)");
+    }
+  });
 
   //** sendWinner */
   socket.on("sendWinner", (data) => {
@@ -373,13 +382,18 @@ io.on("connection", (socket) => {
     const allPlayersReady = rooms[roomId].every((player) => player.ready);
 
     if (allPlayersReady) {
-        console.log(`Both players in room ${roomId} are ready.`);
-        // Emit 'bothReady' to all players in the room
-        io.to(roomId).emit("bothReady", true);
+      console.log(`Both players in room ${roomId} are ready.`);
+      // Emit 'bothReady' to all players in the room
+      io.to(roomId).emit("bothReady", true);
     } else {
-        console.log(`Waiting for both players to be ready in room ${roomId}.`);
+      console.log(`Waiting for both players to be ready in room ${roomId}.`);
     }
-});
+  });
+
+  socket.on(`resetServer`, () => {
+    console.log("resetServer received");
+    io.emit(`serverReset`);
+  });
 
   socket.on("disconnect", () => {
     console.log(
@@ -388,6 +402,9 @@ io.on("connection", (socket) => {
       "Total connected:",
       io.engine.clientsCount
     );
+
+    clientCount--;
+    io.emit("clientCount", clientCount);
 
     // Remove user from all rooms they are in
     for (const roomId of Object.keys(rooms)) {
