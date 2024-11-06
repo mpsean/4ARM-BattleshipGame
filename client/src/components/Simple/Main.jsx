@@ -130,12 +130,24 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
 
   //when click button
   const startTurn = () => {
-    console.log("start")
-    sendDataToParent();
-    generateComputerShips();
-    setGameState('player1-turn');
-    startTimer();
+    console.log("[main.jsx] start")
+    handleStartTurn();
   };
+
+  const handleStartTurn = () => {
+    console.log("handleStartTurn [main.jsx]")
+    socket.emit("checkReady", true);
+    socket.on("bothReady", (readyStatus) => {
+      if (readyStatus) {
+          console.log("Both players are ready!");
+          sendDataToParent();
+          generateComputerShips();
+          setGameState('player1-turn');
+          startTimer();
+      }
+  });
+    
+  }
 
   //update GameState with Turn
   useEffect(() => {
@@ -360,7 +372,8 @@ useEffect(() => {
 
 
   const startAgain = () => {
-    //setGameState('placement');
+    setGameState('placement');
+    socket.emit("gameover", true);
     setWinner(null);
     setCurrentlyPlacing(null);
     setPlacedShips([]); //our grid
