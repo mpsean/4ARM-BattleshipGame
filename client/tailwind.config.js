@@ -13,6 +13,16 @@ export default {
       },
       backgroundImage: {
         'front': "url('assets/images/front-page.png')"
+      },
+      screens: {
+        'xxsm': '270px',
+        'xsm': '380px',
+        'sm': '640px',
+        'md': '768px',
+        'lg': '1024px',
+        'lgxl': '1100px',
+        'xl': '1280px',
+        '2xl': '1536px',
       }
     },
   },
