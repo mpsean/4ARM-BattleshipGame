@@ -8,6 +8,7 @@ import Defeat from './components/defeat.jsx'
 import Game from './components/game.jsx'
 import WelcomeScreen from './components/WelcomeScreen.jsx';
 import LoginSimple from './components/loginSimple.jsx';
+import ResetPage from './components/resetPage.jsx';
 
 //this app is define path
 
@@ -23,6 +24,7 @@ function App(){
       <Route path='/welcomescreen' element={<WelcomeScreen />}></Route>
       <Route path='/game' element={<Game />}></Route>
       <Route path='/loginSimple' element={<LoginSimple />}></Route>
+      <Route path='/resetPage' element={<ResetPage />}></Route>
     </Routes>
     </BrowserRouter>
   )

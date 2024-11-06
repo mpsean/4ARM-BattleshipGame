@@ -9,6 +9,7 @@ import clock from '../assets/images/clock.png';
 import { Main } from './Simple/Main.jsx';
 
 import './css/main.css';
+import resetPage from './resetPage.jsx';
 
 
 const Game = () => {
@@ -62,6 +63,11 @@ useEffect(() => {
 
   useEffect(() => {
 
+    socket.on(`serverReset`, () => {
+      console.log("serverReset")
+      Navigate("/resetPage");
+    });
+
 
     // Listen for the 'countUpdated' event to update the count on all clients
     socket.on("countUpdated", (newCount) => {
@@ -80,6 +86,7 @@ useEffect(() => {
 
     // Clean up socket listeners when the component unmounts
     return () => {
+      socket.off("serverReset");
       socket.off("countUpdated");
       socket.off("receiveOppPlaceShip");
       socket.off("receiveHit");
