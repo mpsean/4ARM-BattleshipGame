@@ -89,6 +89,7 @@ const Defeat = () => {
               <p class="m-2 font-museo text-center">STATUS</p>
             </div>
           </div>
+        </div>
           <div class="flex flex-1 items-center w-3/5">
             <p class="font-museo font-medium text-3xl text-white w-96">
               {userId}
@@ -102,7 +103,6 @@ const Defeat = () => {
               </div>
             </div>
           </div>
-        </div>
       </div>
 
       <div class="grid grid-cols-3 items-end gap-x-28 lg:gap-x-40">
