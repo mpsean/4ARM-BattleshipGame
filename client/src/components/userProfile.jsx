@@ -40,14 +40,15 @@ const Profile = () => {
       ) : (
         <div>
           <h3 className="text-center font-montserrat pt-4 font-bold text-6xl text-sky-900 m-2 dark:text-white">{userData.nickname}</h3>
+          <div className="m-10 rounded-lg bg-white dark:bg-sky-700 py-1">
+            <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Played: {userData.matchPlayed}</p>
+            <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Won: {userData.matchWon}</p>
+            <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Lost: {userData.matchLose}</p>
+            <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Draw: {userData.matchDraw}</p>
+          </div>
         </div>
       )}
-      <div className="m-10 rounded-lg bg-white dark:bg-sky-700 py-1">
-        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Played: {userData.matchPlayed}</p>
-        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Won: {userData.matchWon}</p>
-        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Lost: {userData.matchLose}</p>
-        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Draw: {userData.matchDraw}</p>
-      </div>
+      
       <button
         onClick={handleBack}
         className="justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800"
