@@ -62,7 +62,7 @@ export const updateScoreAdv = async (req, res) => {
     try {
         const { nickname } = req.params; 
 
-        const updatedPlayer = await SimpleUserModel.findOneAndUpdate(
+        const updatedPlayer = await UserModel.findOneAndUpdate(
             { nickname : nickname },             
             { $inc: { score: 1 } }, 
             { new: true }          
@@ -83,7 +83,7 @@ export const resetScoreAdv = async (req, res) => {
     
     try {
         const { nickname } = req.params; 
-        const updatedPlayer = await SimpleUserModel.findOneAndUpdate(
+        const updatedPlayer = await UserModel.findOneAndUpdate(
             { nickname : nickname } ,             
             { $set: { score: 0 } }, 
             { new: true }          
@@ -103,7 +103,7 @@ export const resetScoreAdv = async (req, res) => {
 export const getScoreAdv = async (req, res) => {
     try {
         const { nickname } = req.params; 
-        const player = await SimpleUserModel.findOne(
+        const player = await UserModel.findOne(
             { nickname : nickname } ,             
         );
         return res.status(200).json({score : player.score});
