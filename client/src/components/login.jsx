@@ -30,7 +30,7 @@ function login({ setIsLoggedIn, isLoggedIn }) {
                 sessionStorage.setItem("userId", userID);
                 
                 // Navigate to the home page with user data
-                navigate("/welcomescreenAdv", { state: { user: userData } });
+                navigate("/welcomeScreenAdv", { state: { user: userData } });
               } 
               if (result.data.message === "Invalid credentials") {
                 console.log("Invalid credentials")
