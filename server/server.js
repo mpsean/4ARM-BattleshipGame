@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const server = createServer(app);
 const io = new Server(server, {
   cors: {

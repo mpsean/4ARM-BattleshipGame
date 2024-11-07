@@ -4,6 +4,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from '../socket';
 import logoImg from '../assets/images/front-logo.png';
 import clock from '../assets/images/clock.png';
+import dotenv from "dotenv";
+
 
 //import { WelcomeScreen } from './WelcomeScreen.jsx';
 import { Main } from './Adv/Main.jsx';
@@ -66,7 +68,7 @@ useEffect(() => {
   useEffect(() => {
 
     socket.on(`serverReset`, () => {
-      axios.put(`http://localhost:3001/result/${userId}/updateMatchDraw`)
+      axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchDraw`)
         .then((response) => {
           console.log("reset game")
           Navigate("/resetPage");
@@ -124,8 +126,8 @@ useEffect(() => {
   //console.log(userId);
   // Function to handle incrementing the count
   const handleWin = () => {
-    axios.put(`http://localhost:3001/result/${userId}/updateMatchWon`)
-    axios.put(`http://localhost:3001/result/${userId}/updateScoreAdv`)
+    axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchWon`)
+    axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateScoreAdv`)
         .then(result => {
             Navigate("/victoryAdv")
         })
@@ -133,7 +135,7 @@ useEffect(() => {
   };
 
   const handleLose = () => {
-    axios.put(`http://localhost:3001/result/${userId}/updateMatchLose`)
+    axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchLose`)
     Navigate("/defeatAdv")
   };
 

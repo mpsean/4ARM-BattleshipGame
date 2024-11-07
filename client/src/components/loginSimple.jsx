@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { initSocket } from '../socket';
+import dotenv from "dotenv";
+
 
 function loginSimple({ setIsLoggedIn, isLoggedIn }) {
   const [nickname , setnickname] = useState("");
@@ -13,7 +15,7 @@ function loginSimple({ setIsLoggedIn, isLoggedIn }) {
 
   const handleSubmit  = (e) => {
       e.preventDefault();
-      axios.post(`http://localhost:3001/user/loginSimple`, { nickname })
+      axios.post(`http://${import.meta.env.VITE_SERVER_IP}:3001/user/loginSimple`, { nickname })
           .then(result => {
               if (result.data.message === "Login successful") {
                 console.log("Login successful")
