@@ -369,7 +369,7 @@ useEffect(() => {
       axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchLose`)
       const delayTimer = setTimeout(() => {
         Navigate('/defeatAdv');
-    }, 1000); 
+    }, 500); 
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 

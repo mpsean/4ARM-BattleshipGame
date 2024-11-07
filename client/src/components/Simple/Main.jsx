@@ -367,7 +367,7 @@ useEffect(() => {
       console.log(`main.jsx loser userid is ${userId} `)
       const delayTimer = setTimeout(() => {
         Navigate('/defeat');
-    }, 1000); 
+    }, 500); 
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 
