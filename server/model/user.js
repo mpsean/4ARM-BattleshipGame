@@ -6,6 +6,22 @@ const UserSchema = new mongoose.Schema({
     score:{
         type : Number,
         default : 0
+    },
+    matchPlayed:{
+        type : Number,
+        default : 0
+    },
+    matchWon:{
+        type : Number,
+        default : 0
+    },
+    matchLose:{
+        type : Number,
+        default : 0
+    },
+    matchDraw:{
+        type : Number,
+        default : 0
     }
 })
 
