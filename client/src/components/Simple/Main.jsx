@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GameView } from './GameView';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from "axios";
-const userId = sessionStorage.getItem("userId");
 import clock from '../../assets/images/clock.png';
 
 import {
@@ -48,6 +47,8 @@ const AVAILABLE_SHIPS = [
 export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived, turn, setTurn, Socket}) => { 
   
   const socket = Socket; // Get the existing socket instance
+  
+  const [userId, setUserId] = useState();
 
   const [gameState, setGameState] = useState('placement');
   const [winner, setWinner] = useState(null);
@@ -352,14 +353,15 @@ useEffect(() => {
     if (gameState === 'game-over' && winner === 'player') {
         socket.emit('sendWinner',winner)
         socket.emit("gameover", true);
-        console.log(`main.jsx userid is ${userId} `)
+        console.log(`main.jsx winner userid is ${userId} `)
         axios.put(`http://localhost:3001/result/${userId}/updateScore`)
         .then(result => {
             Navigate("/victory")
         })
-        .catch(err => setError(console.log(err)));
+        // .catch(err => setError(console.log(err)));
     } 
     if (gameState === 'game-over' && winner === 'computer') {
+      console.log(`main.jsx loser userid is ${userId} `)
       Navigate('/defeat'); // Navigate to defeat screen
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
@@ -440,6 +442,12 @@ useEffect(() => {
       return () => clearInterval(interval); // Clean up the interval on unmount or re-run
     }
   }, [gameState]);
+
+  useEffect(() => {
+    checkIfGameOver()
+    setUserId(sessionStorage.getItem("userId"));
+    console.log("this should run everytime gameState")
+  },[gameState]);
 
   useEffect(() => {
     socket.on('receiveWinner', (data) => {

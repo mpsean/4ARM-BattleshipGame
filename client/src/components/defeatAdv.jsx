@@ -68,6 +68,7 @@ const Defeat = () => {
         disconnectSocket();
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("opponentId");
+        sessionStorage.removeItem("IsRematch");
         Navigate("/login");
       })
       .catch((err) => setError(console.log(err)));

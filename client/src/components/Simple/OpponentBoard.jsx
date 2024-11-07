@@ -93,7 +93,12 @@ export const OpponentBoard = ({
     } 
   }
 
-  const playerCanFire = playerTurn() && !checkIfGameOver();
+  const isGameOver = () => {
+    if(gameState=='game-over'){return true}
+    else{return false}
+  }
+
+  const playerCanFire = playerTurn() && !isGameOver();
 
   let alreadyHit = (index) =>
     compLayout[index] === 'hit' ||
