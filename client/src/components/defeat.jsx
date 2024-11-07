@@ -58,6 +58,7 @@ const Defeat = () => {
   // Function to handle incrementing the count
   const handleRematch = () => {
     Navigate("/WelcomeScreen");
+    console.log("defeat opp :",sessionStorage.getItem(`opponentId`))
   };
 
   // Function to handle decrementing the count
@@ -73,6 +74,7 @@ const Defeat = () => {
         disconnectSocket();
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("opponentId");
+        sessionStorage.removeItem("IsRematch");
         Navigate("/loginSimple");
       })
       .catch((err) => setError(console.log(err)));

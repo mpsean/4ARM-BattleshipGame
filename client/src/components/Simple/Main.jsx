@@ -350,13 +350,14 @@ useEffect(() => {
   // When gameState is 'game-over' and the winner is the computer, navigate to /defeat
   useEffect(() => {
     if (gameState === 'game-over' && winner === 'player') {
-      axios.put(`http://localhost:3001/result/${userId}/updateScore`)
+        socket.emit('sendWinner',winner)
+        socket.emit("gameover", true);
+        console.log(`main.jsx userid is ${userId} `)
+        axios.put(`http://localhost:3001/result/${userId}/updateScore`)
         .then(result => {
             Navigate("/victory")
         })
         .catch(err => setError(console.log(err)));
-        socket.emit('sendWinner',winner)
-        socket.emit("gameover", true);
     } 
     if (gameState === 'game-over' && winner === 'computer') {
       Navigate('/defeat'); // Navigate to defeat screen
@@ -456,6 +457,8 @@ useEffect(() => {
     };
   },[]);
 
+
+
   return (
     <React.Fragment>
       <div className="flex justify-center items-center pb-2 gap-3">
@@ -483,6 +486,8 @@ useEffect(() => {
       />
       <audio ref={lossSoundRef} src="../../assets/sounds/lose.wav" className="clip" preload="auto" />
       <audio ref={winSoundRef} src="../../assets/sounds/win.wav" className="clip" preload="auto" />
+      
+      
       <GameView
         availableShips={availableShips}
         selectShip={selectShip}

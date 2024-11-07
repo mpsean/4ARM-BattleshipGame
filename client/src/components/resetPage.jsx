@@ -33,6 +33,7 @@ const resetPage = () => {
         disconnectSocket();
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("opponentId");
+        sessionStorage.removeItem("IsRematch");
         Navigate("/loginSimple");
       })
       .catch((err) => setError(console.log(err)));
