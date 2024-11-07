@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import dotenv from "dotenv";
+
 
 const Profile = () => {
   // State to store data
@@ -8,10 +10,12 @@ const Profile = () => {
   const searchId = sessionStorage.getItem("searchId");
   const Navigate = useNavigate();
 
+
+
   // Fetch user data when the component mounts
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/${searchId}/getUser`)
+      .get(`http://${import.meta.env.VITE_SERVER_IP}:3001/user/${searchId}/getUser`)
       .then((response) => {
         console.log("API Response:", response.data); // Log response
         setuserData(response.data);

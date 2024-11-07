@@ -4,6 +4,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { disconnectSocket } from "../socket";
 import stalemateHeader from "../assets/images/stalemate-header.png";
 import { getSocket } from "../socket";
+import dotenv from "dotenv";
+
 
 const ResetPage = () => {
   const [error, setError] = useState(null);
@@ -28,7 +30,7 @@ const ResetPage = () => {
   // Function to handle decrementing the count
   const handleDisconnect = () => {
     axios
-      .put(`http://localhost:3001/user/${userId}/deleteUserSimple`)
+      .put(`http://${import.meta.env.VITE_SERVER_IP}:3001/user/${userId}/deleteUserSimple`)
       .then((result) => {
         disconnectSocket();
         sessionStorage.removeItem("userId");

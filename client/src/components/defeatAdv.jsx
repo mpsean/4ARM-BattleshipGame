@@ -5,6 +5,8 @@ import { disconnectSocket } from "../socket";
 import defeatAvatar from "../assets/images/avatar-lose.png";
 import defeatHeader from "../assets/images/defeat-header.png";
 import { getSocket } from "../socket";
+import dotenv from "dotenv";
+
 
 const Defeat = () => {
   const [userScore, setUserScore] = useState(0);
@@ -25,7 +27,7 @@ const Defeat = () => {
 
     // Fetch the latest user score
     axios
-      .get(`http://localhost:3001/result/${userId}/getScoreAdv`)
+      .get(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/getScoreAdv`)
       .then((response) => {
         setUserScore(response.data.score); // Set the user's latest score
       })
@@ -36,7 +38,7 @@ const Defeat = () => {
 
     // Fetch the latest opponent score
     axios
-      .get(`http://localhost:3001/result/${opponentId}/getScoreAdv`)
+      .get(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${opponentId}/getScoreAdv`)
       .then((response) => {
         setOpponentScore(response.data.score); // Set the opponent's latest score
       })
@@ -63,7 +65,7 @@ const Defeat = () => {
   // Function to handle decrementing the count
   const handleDisconnect = () => {
     axios
-      .put(`http://localhost:3001/result/${userId}/resetScoreAdv`)
+      .put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/resetScoreAdv`)
       .then((result) => {
         disconnectSocket();
         sessionStorage.removeItem("userId");

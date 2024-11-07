@@ -3,6 +3,8 @@ import { GameView } from './GameView';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from "axios";
 import clock from '../../assets/images/clock.png';
+import dotenv from "dotenv";
+
 
 import {
   placeAllComputerShips,
@@ -355,7 +357,7 @@ useEffect(() => {
         socket.emit('sendWinner',winner)
         socket.emit("gameover", true);
         console.log(`main.jsx winner userid is ${userId} `)
-        axios.put(`http://localhost:3001/result/${userId}/updateScore`)
+        axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateScore`)
         .then(result => {
             Navigate("/victory")
         })
@@ -363,7 +365,9 @@ useEffect(() => {
     } 
     if (gameState === 'game-over' && winner === 'computer') {
       console.log(`main.jsx loser userid is ${userId} `)
-      Navigate('/defeat'); // Navigate to defeat screen
+      const delayTimer = setTimeout(() => {
+        Navigate('/defeat');
+    }, 500); 
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { getSocket } from "../socket";
+import dotenv from "dotenv";
+
 
 import logoImg from "../assets/images/front-logo.png";
 
@@ -74,7 +76,7 @@ const WelcomeScreen = ({ startPlay }) => {
       return;
     }
     axios
-      .put(`http://localhost:3001/result/${userId}/updateMatchPlayed`)
+      .put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchPlayed`)
       .then((response) => {
         Navigate("/gameAdv");
         console.log(sessionStorage.getItem("playerPos"));
