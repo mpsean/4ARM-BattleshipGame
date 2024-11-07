@@ -1,4 +1,5 @@
-Welcome to the Battleship Game! This project is an implementation of the classic board game Battleship, developed in React and JSX. The game has multiple modes, including Simple, Advanced, and Bot mode.
+Welcome to the Battleship Game! This project is part of the Netcentric Architecture 2190472.i (2024/1) course, developed as an implementation of the classic board game Battleship using React and JSX. The game includes multiple modes, allowing players to choose from Simple, Advanced, and Bot modes.
+
 
 <p> Project Overview </p>
 In this project, you'll find a digital version of the Battleship game, where players place ships on a grid and take turns trying to sink each other's fleet. The game includes several modes to keep things interesting, ranging from basic gameplay to more challenging bot-driven interactions.
