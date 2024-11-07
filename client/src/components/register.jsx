@@ -2,6 +2,7 @@ import logoImg from '../assets/images/front-logo.png';
 import React, { useState } from 'react';
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import dotenv from "dotenv";
 
 
 const register = () => {
@@ -16,7 +17,7 @@ const register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post(`http://localhost:3001/user/register`, { nickname, password })
+    axios.post(`http://${import.meta.env.VITE_SERVER_IP}:3001/user/register`, { nickname, password })
         .then(result => {
             if (result.status === 201) {
                 navigate("/login");

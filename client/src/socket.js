@@ -1,11 +1,12 @@
 import { io } from "socket.io-client";
+import dotenv from "dotenv";
 
 let socket;
 
 // Function to initialize the socket connection
 export const initSocket = () => {
   if (!socket) {
-    socket = io("http://localhost:3001", {
+    socket = io(`http://${import.meta.env.VITE_SERVER_IP}:3001`, {
       transports: ['websocket'],
       reconnection: true
     });
