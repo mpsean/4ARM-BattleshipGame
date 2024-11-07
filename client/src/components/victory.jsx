@@ -99,17 +99,17 @@ const Victory = () => {
       </div>
       <div class="flex flex-col justify-between items-center gap-2 pb-5">
         <div class="flex flex-1 items-center w-3/5">
-          <p class="font-montserrat font-medium text-3xl text-white w-96">{userId}</p>
+          <p class="font-museo font-medium text-3xl text-white w-96">{userId}</p>
           <div class="flex gap-8 w-48 justify-center">
-            <p class="font-montserrat font-medium text-3xl w-12 text-white text-center">{userScore}</p>
+            <p class="font-museo font-medium text-3xl w-12 text-white text-center">{userScore}</p>
             <div class="bg-green-700 w-24">
             </div>
           </div>
         </div>
         <div class="flex flex-1 items-center w-3/5">
-          <p class="font-montserrat font-medium text-3xl text-white w-96">{opponentId}</p>
+          <p class="font-museo font-medium text-3xl text-white w-96">{opponentId}</p>
           <div class="flex gap-8 w-48 justify-center">
-            <p class="font-montserrat font-medium text-3xl w-12 text-white text-center">{opponentScore}</p>
+            <p class="font-museo font-medium text-3xl w-12 text-white text-center">{opponentScore}</p>
             <div className={`${statusClass} w-24`}>
             </div>
           </div>
