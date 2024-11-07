@@ -54,7 +54,7 @@ function loginSimple({ setIsLoggedIn, isLoggedIn }) {
 
       
       {/* Form submission logic with React */}
-      <form class="font-montserrat justify-center text-center bg-white dark:bg-cyan-800 m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
+      <form class="font-montserrat justify-center text-center bg-sky-300 dark:bg-cyan-800 m-2 p-5 border-1 rounded-2xl shadow-lg" id="nameForm" onSubmit={handleSubmit}>
         {/* Label omitted for simplicity */}
         <input 
           type="text" 
