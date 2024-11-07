@@ -58,8 +58,16 @@ const WelcomeScreen = ({ startPlay }) => {
       alert("Waiting for opponent.");
       return;
     }
-    Navigate("/gameAdv");
-    console.log(sessionStorage.getItem("playerPos"))
+    axios.put(`http://localhost:3001/result/${userId}/updateMatchPlayed`)
+    .then((response) => {
+        Navigate("/gameAdv");
+        console.log(sessionStorage.getItem("playerPos"))
+    })
+    .catch((err) => {
+        console.error(err);
+        setError("Failed to update match played.");
+    });
+    
   };
 
   return (

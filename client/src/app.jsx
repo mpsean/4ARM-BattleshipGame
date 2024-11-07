@@ -9,6 +9,10 @@ import Game from './components/game.jsx'
 import WelcomeScreen from './components/WelcomeScreen.jsx';
 import LoginSimple from './components/loginSimple.jsx';
 import ResetPage from './components/resetPage.jsx';
+import GameAdv from './components/gameAdv.jsx';
+import VictoryAdv from './components/victoryAdv.jsx';
+import DefeatAdv from './components/defeatAdv.jsx';
+import WelcomeScreenAdv from './components/welcomeScreenAdv.jsx';
 
 //this app is define path
 
@@ -25,6 +29,11 @@ function App(){
       <Route path='/game' element={<Game />}></Route>
       <Route path='/loginSimple' element={<LoginSimple />}></Route>
       <Route path='/resetPage' element={<ResetPage />}></Route>
+      <Route path='gameAdv' element={<GameAdv />}></Route>
+      <Route path='/victoryAdv' element={<VictoryAdv />}></Route>
+      <Route path='/defeatAdv' element={<DefeatAdv />}></Route>
+      <Route path='/welcomeScreenAdv' element={<WelcomeScreenAdv />}></Route>
+
     </Routes>
     </BrowserRouter>
   )

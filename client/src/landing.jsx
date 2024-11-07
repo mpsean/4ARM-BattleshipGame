@@ -16,13 +16,13 @@ const App = () => {
                     className="pt-24"
                 />
 
-                <div>
+                {/* <div>
                   <video 
                     src="/assets/vids/lore-vid.mp4"
                     class="absolute px-40 inset-0 h-screen w-fit object-cover"
                     autoPlay muted loop>
                   </video>
-                </div>
+                </div> */}
 
                 <div className="flex gap-10 pt-20">
                   <a href={"/loginSimple"}>
