@@ -58,6 +58,7 @@ export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, impo
   const [computerShips, setComputerShips] = useState([]);
   const [hitsByPlayer, setHitsByPlayer] = useState([]);
   const [hitsByComputer, setHitsByComputer] = useState([]);
+  const [error, setError] = useState(null);
 
   const initExportHit = useRef(false); 
   const initImportHit = useRef(false); 
