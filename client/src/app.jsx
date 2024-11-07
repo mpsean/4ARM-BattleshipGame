@@ -13,6 +13,8 @@ import GameAdv from './components/gameAdv.jsx';
 import VictoryAdv from './components/victoryAdv.jsx';
 import DefeatAdv from './components/defeatAdv.jsx';
 import WelcomeScreenAdv from './components/welcomeScreenAdv.jsx';
+import Profile from './components/userProfile.jsx';
+import Search from './components/profileSearch.jsx';
 
 //this app is define path
 
@@ -33,6 +35,8 @@ function App(){
       <Route path='/victoryAdv' element={<VictoryAdv />}></Route>
       <Route path='/defeatAdv' element={<DefeatAdv />}></Route>
       <Route path='/welcomeScreenAdv' element={<WelcomeScreenAdv />}></Route>
+      <Route path='/search' element={<Search />}></Route>
+      <Route path='/profile' element={<Profile />}></Route>
 
     </Routes>
     </BrowserRouter>

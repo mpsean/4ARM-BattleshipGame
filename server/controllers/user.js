@@ -74,5 +74,17 @@ export const deleteUserSimple = async (req, res) => {
           return res.status(500).json({ message: 'Error deleting user' });
         }
     };
+    
+export const getUserData = async (req, res) => {
+    try {
+        const { nickname } = req.params; 
+        const player = await UserModel.findOne(
+            { nickname : nickname } ,             
+        );
+        res.status(200).json({nickname : player.nickname, matchPlayed : player.matchPlayed, matchWon : player.matchWon, matchLose : player.matchLose, matchDraw : player.matchDraw});
+    } catch (error) {
+        res.status(404).json({ error: error.message });
+    }
+}
 
 export default router;
