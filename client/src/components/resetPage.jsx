@@ -5,7 +5,7 @@ import { disconnectSocket } from "../socket";
 import stalemateHeader from "../assets/images/stalemate-header.png";
 import { getSocket } from "../socket";
 
-const resetPage = () => {
+const ResetPage = () => {
   const [error, setError] = useState(null);
   const Navigate = useNavigate();
   const userId = sessionStorage.getItem("userId");
@@ -34,7 +34,7 @@ const resetPage = () => {
         sessionStorage.removeItem("userId");
         sessionStorage.removeItem("opponentId");
         sessionStorage.removeItem("IsRematch");
-        Navigate("/loginSimple");
+        Navigate("/");
       })
       .catch((err) => setError(console.log(err)));
   };
@@ -65,4 +65,4 @@ const resetPage = () => {
   );
 };
 
-export default resetPage;
+export default ResetPage;
