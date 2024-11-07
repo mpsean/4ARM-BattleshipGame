@@ -32,23 +32,25 @@ const Profile = () => {
   };
 
   return (
-    <div>
-      <h2>User Profile</h2>
+    <div className="min-h-screen min-w-screen bg-sky-300 dark:bg-sky-900">
+      <h2  className="text-center font-montserrat pt-4 font-bold text-3xl text-sky-900 m-2 dark:text-white">User Profile</h2>
       {/* Conditional rendering based on the userData state */}
       {userData === null ? (
-        <p>Loading data...</p> // Show a loading message if data hasn't been fetched yet
+        <p className="text-center font-montserrat pt-4 font-normal text-3xl text-sky-900 m-2 dark:text-white">Loading data...</p> // Show a loading message if data hasn't been fetched yet
       ) : (
         <div>
-          <h3>{userData.nickname}</h3>
-          <p>Matches Played: {userData.matchPlayed}</p>
-          <p>Matches Won: {userData.matchWon}</p>
-          <p>Matches Lost: {userData.matchLose}</p>
-          <p>Matches Draw: {userData.matchDraw}</p>
+          <h3 className="text-center font-montserrat pt-4 font-bold text-6xl text-sky-900 m-2 dark:text-white">{userData.nickname}</h3>
         </div>
       )}
+      <div className="m-10 rounded-lg bg-white dark:bg-sky-700 py-1">
+        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Played: {userData.matchPlayed}</p>
+        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Won: {userData.matchWon}</p>
+        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Lost: {userData.matchLose}</p>
+        <p className="text-center font-montserrat pt-4 font-normal text-xl text-sky-900 m-2 dark:text-white">Matches Draw: {userData.matchDraw}</p>
+      </div>
       <button
         onClick={handleBack}
-        className="flex justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800"
+        className="justify-center items-center gap-2 px-7 py-4 border-4 h-16 font-montserrat font-bold text-xl leading-none text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800"
       >
         Back
       </button>
