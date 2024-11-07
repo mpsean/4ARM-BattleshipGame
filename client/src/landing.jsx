@@ -35,6 +35,11 @@ const App = () => {
                     Advanced Mode
                   </button>
                   </a>
+                  <a href={"/search"}>
+                  <button className="flex justify-center items-center gap-2 px-7 py-4 border-4 font-montserrat font-bold text-xl leading-none border-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800">
+                    Player Search
+                  </button>
+                  </a>
                 </div>
               </div>
           </div>
