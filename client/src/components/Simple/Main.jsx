@@ -365,7 +365,9 @@ useEffect(() => {
     } 
     if (gameState === 'game-over' && winner === 'computer') {
       console.log(`main.jsx loser userid is ${userId} `)
-      Navigate('/defeat'); // Navigate to defeat screen
+      const delayTimer = setTimeout(() => {
+        Navigate('/defeat');
+    }, 1000); 
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 

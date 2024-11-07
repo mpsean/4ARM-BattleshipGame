@@ -367,7 +367,9 @@ useEffect(() => {
     if (gameState === 'game-over' && winner === 'computer') {
       console.log(`main.jsx loser userid is ${userId} `)
       axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchLose`)
-      Navigate('/defeatAdv'); // Navigate to defeat screen
+      const delayTimer = setTimeout(() => {
+        Navigate('/defeatAdv');
+    }, 1000); 
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 
