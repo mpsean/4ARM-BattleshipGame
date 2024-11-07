@@ -16,7 +16,7 @@ import WelcomeScreenAdv from './components/welcomeScreenAdv.jsx';
 import Profile from './components/userProfile.jsx';
 import Search from './components/profileSearch.jsx';
 
-import GameSingle from './components/gameSimple.jsx';
+import GameSingle from './components/gameSingle.jsx';
 import VictorySingle from './components/victorySingle.jsx';
 import DefeatSingle from './components/defeatSingle.jsx';
 //this app is define path

@@ -198,36 +198,13 @@ useEffect(() => {
 
 <div>
 
-  <h2>Count: {count}</h2>
-  <h1>player : {playerPos}</h1>
-  <h1>playerID : {userId}</h1>
-  <h1>opponentId : {opponentId}</h1>
-  <h1>Turn : {turn}</h1>
-
   <div className="font-museo text-white font-medium text-5xl drop-shadow-lg w-20 whitespace-nowrap text-center">
       <div>
       {exportState} 
       </div>
   </div>
 
-  {/* Button to increment the count */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleIncrement} style={buttonStyle}>
-    Increment
-  </button>
-
-  {/* Button to decrement the count */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleDecrement} style={buttonStyle}>
-    Decrement
-  </button>
-
-  {/* Button to handle Win */}
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleWin} style={buttonStyle}>
-    Win
-  </button>
-
-  <button className="gap-2 px-6 py-3 font-montserrat font-bold text-lg leading-none ring-4 ring-white text-white rounded-full bg-sky-700 dark:bg-sky-950 hover:bg-green-800" onClick={handleLose} style={buttonStyle}>
-    Lose
-  </button>
+  
 </div>
 
 {error && <p style={{ color: "red" }}>{error}</p>}
