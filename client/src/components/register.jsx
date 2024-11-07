@@ -45,7 +45,6 @@ const register = () => {
       <h1 class="font-montserrat pt-4 font-bold text-3xl text-sky-900 m-2">Sign Up</h1>
       </div>
       
-      <h2 class="font-museo text-center">Currently online: n users</h2>
       <h1 class="font-bold font-museo text-center">Enter a nickname and password.</h1>
       
       {/* Form submission logic with React */}
