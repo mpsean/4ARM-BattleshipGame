@@ -1,19 +1,15 @@
 How to use :
 
-<p>1.open terminal install express.js & socket.io</p>
-<p> npm i express socket.io </p>
+<p>1.Open 2 ternimal cd one to client another to server</p>
+<p> npm i on both side</p>
 
-<p>2.init project (this will create a package.json) </p>
-<p> npm init -y </p>
+<p>2.Run server</p>
+<p> npm run dev on client terminal, npm start on server terminal </p>
 
 <p>3.run server</p>
 <p> node server.js </p>
 
-<p>4.play on http://localhost:3000/</p>
-<br>
-Library
-<p>Server : npm i mongoose axios express cors bcrypt dotenv nodemon express-session connect-mongo </p>
-<p>Client : npm i tailwindcss vite react-router-dom axios  </p>
+<p>4.play on http://localhost:5173/</p>
 
 <p>Good Luck with the Game Have Fun Have Fun</p>
  
