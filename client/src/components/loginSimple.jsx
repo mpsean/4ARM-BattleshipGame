@@ -13,6 +13,10 @@ function loginSimple({ setIsLoggedIn, isLoggedIn }) {
 
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate("/");
+  }
+
   const handleSubmit  = (e) => {
       e.preventDefault();
       axios.post(`http://${import.meta.env.VITE_SERVER_IP}:3001/user/loginSimple`, { nickname })
@@ -43,6 +47,12 @@ function loginSimple({ setIsLoggedIn, isLoggedIn }) {
   };
   return (
     <section class="relative bg-front bg-cover dark:bg-black/20 dark:bg-blend-darken h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex flex-col items-center justify-center">
+      <button
+        onClick={handleBack}
+        className="absolute top-4 left-4 px-4 py-2 font-montserrat font-bold text-lg leading-none text-white bg-sky-700 dark:bg-sky-950 hover:bg-green-800 rounded-full"
+      >
+        Back
+      </button>
     <div class="justify-center px-36 py-16 bg-white/70 dark:bg-white/30 rounded-3xl">
       <div class="flex justify-center">
         <img 
