@@ -20,10 +20,27 @@ const WelcomeScreen = ({ startPlay }) => {
 
   const socket = getSocket(); // Get the existing socket instance
 
+
   const [videoEnded, setVideoEnded] = useState(false);
 
+  const rematchCheck = () => {
+    const isRematch = sessionStorage.getItem(`IsRematch`);
+    console.log("isRematch is ",isRematch)
+    if(isRematch){
+      console.log("this is a REMATCH")
+      console.log("rematch opp :",sessionStorage.getItem(`opponentId`))
+      let opp = sessionStorage.getItem(`opponentId`)
+      console.log(`Your opponent is: ${opp}`);
+      if(opp){
+        setOpponentMessage(`Your opponent is ${opp}`);
+      }
+    }
+  }
+
   useEffect(() => {
-    socket.emit("joinRoom", { room: room, playerName: userId });
+    sessionStorage.setItem("IsRematch",true);
+
+    socket.emit('joinRoom', {room: room, playerName: userId});
 
     socket.on("roomJoined", (room) => {
       console.log(`Joined room ${room}`);
@@ -71,6 +88,11 @@ const WelcomeScreen = ({ startPlay }) => {
   const handleVideoEnd = () => {
     setVideoEnded(true);
   };
+
+  useEffect(()=> {
+    rematchCheck()
+    console.log("this should reload everytime that rematch")
+  },[])
 
   return (
     <div class="bg-front bg-cover dark:bg-black/20 dark:bg-blend-darken h-screen w-screen bg-no-repeat bg-center py-16 px-24 flex flex-col items-center justify-center">

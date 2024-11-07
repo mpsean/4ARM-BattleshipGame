@@ -345,6 +345,7 @@ io.on("connection", (socket) => {
 
     // Update lastSentData and mark player as having placed their ship
     player.lastSentWinner = data;
+    player.ready = false;
 
     const opponent = rooms[roomId].find((player) => player.id !== socket.id);
     if (opponent) {

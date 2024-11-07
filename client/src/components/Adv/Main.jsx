@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GameView } from './GameView';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import axios from "axios";
-const userId = sessionStorage.getItem("userId");
 import clock from '../../assets/images/clock.png';
 
 import {
@@ -48,6 +47,8 @@ const AVAILABLE_SHIPS = [
 export const Main = ({ oppPlaceShip, setMyPlaceShip, setExportHitsByPlayer, importHitReceived, turn, setTurn, Socket}) => { 
   
   const socket = Socket; // Get the existing socket instance
+  
+  const [userId, setUserId] = useState();
 
   const [gameState, setGameState] = useState('placement');
   const [winner, setWinner] = useState(null);
@@ -351,18 +352,20 @@ useEffect(() => {
   // When gameState is 'game-over' and the winner is the computer, navigate to /defeat
   useEffect(() => {
     if (gameState === 'game-over' && winner === 'player') {
-      axios.put(`http://localhost:3001/result/${userId}/updateMatchWon`)
-      axios.put(`http://localhost:3001/result/${userId}/updateScore`)
-        .then(result => {
-            Navigate("/victory")
-        })
-        .catch(err => setError(console.log(err)));
         socket.emit('sendWinner',winner)
         socket.emit("gameover", true);
+        console.log(`main.jsx winner userid is ${userId} `)
+        axios.put(`http://localhost:3001/result/${userId}/updateMatchWon`)
+        axios.put(`http://localhost:3001/result/${userId}/updateScoreAdv`)
+        .then(result => {
+            Navigate("/victoryAdv")
+        })
+        // .catch(err => setError(console.log(err)));
     } 
     if (gameState === 'game-over' && winner === 'computer') {
+      console.log(`main.jsx loser userid is ${userId} `)
       axios.put(`http://localhost:3001/result/${userId}/updateMatchLose`)
-      Navigate('/defeat'); // Navigate to defeat screen
+      Navigate('/defeatAdv'); // Navigate to defeat screen
     } 
   }, [gameState, winner, Navigate]); // Dependency array to trigger when gameState or winner changes
 
@@ -444,6 +447,12 @@ useEffect(() => {
   }, [gameState]);
 
   useEffect(() => {
+    checkIfGameOver()
+    setUserId(sessionStorage.getItem("userId"));
+    console.log("this should run everytime gameState")
+  },[gameState]);
+
+  useEffect(() => {
     socket.on('receiveWinner', (data) => {
       if(data == 'player'){
         setWinner('computer')
@@ -458,6 +467,8 @@ useEffect(() => {
 
     };
   },[]);
+
+
 
   return (
     <React.Fragment>
@@ -486,6 +497,8 @@ useEffect(() => {
       />
       <audio ref={lossSoundRef} src="../../assets/sounds/lose.wav" className="clip" preload="auto" />
       <audio ref={winSoundRef} src="../../assets/sounds/win.wav" className="clip" preload="auto" />
+      
+      
       <GameView
         availableShips={availableShips}
         selectShip={selectShip}
