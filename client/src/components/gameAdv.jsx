@@ -158,6 +158,9 @@ useEffect(() => {
   const [exportState, setExportState] = useState(); //use in page
 
   const showState = () => {
+    if(turn=='placement'){
+      setExportState("Please wait")
+    }
     if(playerPos=='player1'){
       if(turn=='player1-turn'){
         setExportState(userId+ " 's turn!")

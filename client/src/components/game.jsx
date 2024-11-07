@@ -67,16 +67,7 @@ useEffect(() => {
   useEffect(() => {
 
     socket.on(`serverReset`, () => {
-      axios.put(`http://localhost:3001/result/${userId}/updateMatchDraw`)
-        .then((response) => {
-          console.log("reset game")
-          Navigate("/resetPage");
-        })
-        .catch((err) => {
-          console.error(err);
-          setError("Failed to reset game.");
-      }
-        );
+      Navigate("/resetPage");
     });
 
 
@@ -160,6 +151,10 @@ useEffect(() => {
   const [exportState, setExportState] = useState(); //use in page
 
   const showState = () => {
+    if(turn=='placement'){
+      setExportState("Please wait")
+    }
+
     if(playerPos=='player1'){
       if(turn=='player1-turn'){
         setExportState(userId+ " 's turn!")
