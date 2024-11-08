@@ -74,7 +74,7 @@ const Game = () => {
   // updatePlacedShip();
 
   return (
-<div className="flex flex-col h-screen w-screen bg-sky-400 justify-center items-center">
+<div className="flex flex-col min-h-screen min-w-screen bg-sky-400 dark:bg-sky-800 justify-center items-center">
 
 <div class="flex justify-end p-8">
   <img 
