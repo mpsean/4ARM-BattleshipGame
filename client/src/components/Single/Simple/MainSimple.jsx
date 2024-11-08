@@ -320,7 +320,7 @@ export const Main = () => {
       />
       <audio ref={lossSoundRef} src="/sounds/lose.wav" className="clip" preload="auto" />
       <audio ref={winSoundRef} src="/sounds/win.wav" className="clip" preload="auto" />
-      <div className="font-museo text-white font-medium text-5xl drop-shadow-lg w-20 py-10 whitespace-nowrap text-center">
+      <div className="font-museo text-white font-medium text-2xl drop-shadow-lg w-20 py-2 whitespace-nowrap text-center">
         <div>
           {gameState} 
         </div>
