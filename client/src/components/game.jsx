@@ -69,16 +69,8 @@ useEffect(() => {
   useEffect(() => {
 
     socket.on(`serverReset`, () => {
-      axios.put(`http://${import.meta.env.VITE_SERVER_IP}:3001/result/${userId}/updateMatchDraw`)
-        .then((response) => {
           console.log("reset game")
           Navigate("/resetPage");
-        })
-        .catch((err) => {
-          console.error(err);
-          setError("Failed to reset game.");
-      }
-        );
     });
 
 
